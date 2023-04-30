@@ -48,7 +48,7 @@ bool Texture::LoadTextureA()
 	/*}else{
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texData)
 	glGenerateMipmap(GL_TEXTURE_2D); */
-	glBindTexture(GL_TEXTURE_2D, 0);//para hacer un unbind de la textura
+	glBindTexture(GL_TEXTURE_2D, 0 );//para hacer un unbind de la textura
 	stbi_image_free(texData); //para liberar la información de la imagen
 	return true;
 }

@@ -123,7 +123,7 @@ void Model::LoadMaterials(const aiScene * scene)
 			aiString path;
 			if (material->GetTexture(aiTextureType_DIFFUSE,0,&path)==AI_SUCCESS)
 			{
-				int idx = std::string(path.data).rfind("\\");//para quitar del path del modelo todo lo que este antes del \ de ubicación de directorio
+				int idx = std::string(path.data).rfind("\\");//para quitar del path del modelo todo lo que este antes del \ de ubicacion de directorio
 				std::string filename = std::string(path.data).substr(idx + 1);
 				std::string tga ="tga";
 				std::string png = "png";
@@ -135,7 +135,7 @@ void Model::LoadMaterials(const aiScene * scene)
 				{
 					if (!TextureList[i]->LoadTextureA())
 					{
-                        printf("Falló en cargar la Textura :%s\n", texPath.c_str());
+                        printf("Fallo en cargar la Textura :%s\n", texPath.c_str());
 						delete TextureList[i];
 						TextureList[i] = nullptr;
 					}
@@ -144,7 +144,7 @@ void Model::LoadMaterials(const aiScene * scene)
 				{
 					if (!TextureList[i]->LoadTexture())
 					{
-                        printf("Falló en cargar la Textura :%s\n", texPath.c_str());
+                        printf("Fallo en cargar la Textura :%s\n", texPath.c_str());
 						delete TextureList[i];
 						TextureList[i] = nullptr;
 					}

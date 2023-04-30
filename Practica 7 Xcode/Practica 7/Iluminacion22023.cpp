@@ -226,7 +226,7 @@ int main()
 	Camino_M.LoadModel("Models/railroad track.obj");
     
     TeslaPrueba = Model();
-    TeslaPrueba.LoadModel("Models/cybertruck.obj");
+    TeslaPrueba.LoadModel("Models/vocho.obj");
 
 
 	std::vector<std::string> skyboxFaces;

@@ -1,3 +1,10 @@
+# MacOS
+.DS_STORE
+
+# IDEs
+.vscode
+
+# C++ ignores --------
 # Prerequisites
 *.d
 

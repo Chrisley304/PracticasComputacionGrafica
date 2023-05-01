@@ -107,17 +107,37 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 	{
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
-	if (key == GLFW_KEY_Y)
-	{
-		theWindow-> muevex += 1.0;
-	}
-	if (key == GLFW_KEY_U)
-	{
-		theWindow-> muevex -= 1.0;
-	}
-
-
-
+//	if (key == GLFW_KEY_Y)
+//	{
+//		theWindow-> muevex += 1.0;
+//	}
+//	if (key == GLFW_KEY_U)
+//	{
+//		theWindow-> muevex -= 1.0;
+//	}
+    
+    // Movimiento del auto
+    if (key == GLFW_KEY_N)
+    {
+        theWindow->movimientoAuto += 10.0;
+        theWindow->mov_ruedas += 5.0;
+    }
+    if (key == GLFW_KEY_M)
+    {
+        theWindow->movimientoAuto -= 10.0;
+        theWindow->mov_ruedas -= 5.0;
+    }
+    
+    // Movimiento del helicoptero
+    if (key == GLFW_KEY_J)
+    {
+        theWindow->mov_helicoptero += 5.0;
+    }
+    if (key == GLFW_KEY_K)
+    {
+        theWindow->mov_helicoptero -= 5.0;
+    }
+    
 	if (key >= 0 && key < 1024)
 	{
 		if (action == GLFW_PRESS)

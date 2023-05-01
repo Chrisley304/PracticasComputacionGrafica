@@ -123,7 +123,7 @@ void Model::LoadMaterials(const aiScene * scene)
 			aiString path;
 			if (material->GetTexture(aiTextureType_DIFFUSE,0,&path)==AI_SUCCESS)
 			{
-				int idx = std::string(path.data).rfind("\\");//para quitar del path del modelo todo lo que este antes del \ de ubicacion de directorio
+				int idx = std::string(path.data).rfind("/"); //para quitar del path del modelo todo lo que este antes del \ de ubicacion de directorio
 				std::string filename = std::string(path.data).substr(idx + 1);
 				std::string tga ="tga";
 				std::string png = "png";

@@ -18,7 +18,10 @@ public:
 		return  glfwWindowShouldClose(mainWindow);}
 	bool* getsKeys() { return keys; }
 	void swapBuffers() { return glfwSwapBuffers(mainWindow); }
-	
+    GLfloat getMovimientoAuto() { return movimientoAuto; }
+    GLfloat getMovimientoHelicoptero() { return mov_helicoptero; }
+    GLfloat getMovimientoRuedas() { return mov_ruedas; }
+    
 	~Window();
 private: 
 	GLFWwindow *mainWindow;
@@ -31,6 +34,9 @@ private:
 	GLfloat xChange;
 	GLfloat yChange;
 	GLfloat muevex;
+    GLfloat movimientoAuto;
+    GLfloat mov_helicoptero;
+    GLfloat mov_ruedas;
 	bool mouseFirstMoved;
 	static void ManejaTeclado(GLFWwindow* window, int key, int code, int action, int mode);
 	static void ManejaMouse(GLFWwindow* window, double xPos, double yPos);

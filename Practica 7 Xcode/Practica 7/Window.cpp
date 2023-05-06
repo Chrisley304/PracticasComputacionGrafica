@@ -14,6 +14,8 @@ Window::Window(GLint windowWidth, GLint windowHeight)
 	width = windowWidth;
 	height = windowHeight;
 	muevex = 2.0f;
+    direccionAuto = 0.0f;
+    
 	for (size_t i = 0; i < 1024; i++)
 	{
 		keys[i] = 0;

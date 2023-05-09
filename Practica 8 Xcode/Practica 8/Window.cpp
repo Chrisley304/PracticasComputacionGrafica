@@ -14,6 +14,13 @@ Window::Window(GLint windowWidth, GLint windowHeight)
 	width = windowWidth;
 	height = windowHeight;
 	muevex = 2.0f;
+    movX_helicoptero = 0.0f;
+    movY_helicoptero = 0.0f;
+    movZ_helicoptero = 0.0f;
+    movimientoXAuto = 0.0f;
+    movimientoZAuto = 0.0f;
+    direccionAuto = -1.0f;
+    
 	for (size_t i = 0; i < 1024; i++)
 	{
 		keys[i] = 0;
@@ -36,7 +43,7 @@ int Window::Initialise()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
 	// CREAR VENTANA
-	mainWindow = glfwCreateWindow(width, height, "Practica 8 - Christian Leyva", NULL, NULL);
+	mainWindow = glfwCreateWindow(width, height, "Practica 9 - Christian Leyva", NULL, NULL);
 
 	if (!mainWindow)
 	{
@@ -104,15 +111,8 @@ void Window::ManejaTeclado(GLFWwindow *window, int key, int code, int action, in
 	{
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
-	//	if (key == GLFW_KEY_Y)
-	//	{
-	//		theWindow-> muevex += 1.0;
-	//	}
-	//	if (key == GLFW_KEY_U)
-	//	{
-	//		theWindow-> muevex -= 1.0;
-	//	}
-
+    
+    // AUTO -------------------
 	// Movimiento X del auto
 	if (key == GLFW_KEY_V)
 	{
@@ -137,7 +137,8 @@ void Window::ManejaTeclado(GLFWwindow *window, int key, int code, int action, in
 		theWindow->movimientoZAuto -= 10.0;
 		theWindow->mov_ruedas -= 5.0;
 	}
-
+    
+    // HELICOPTERO ---------------
 	// Movimiento X del helicoptero
 	if (key == GLFW_KEY_R)
 	{

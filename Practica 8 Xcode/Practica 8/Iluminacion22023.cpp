@@ -1,5 +1,5 @@
 /*
-Semestre 2023-2
+   Semestre 2023-2
  */
 // para cargar imagen
 #define STB_IMAGE_IMPLEMENTATION
@@ -53,13 +53,15 @@ Model Llanta_M;
 Model Camino_M;
 Model Blackhawk_M;
 Model Dado_M;
-// Coche propio (Cybertruck):
+// Coche propio (Vocho):
 Model Vocho;
 Model Llanta_Vocho_izq_frente;
 Model Llanta_Vocho_izq_trasera;
 Model Llanta_Vocho_der_frente;
 Model Llanta_Vocho_der_trasera;
 Model Cofre_Vocho;
+
+Model PistaCarreras;
 
 // Objetos con luz estatica
 Model SableLuz;
@@ -78,9 +80,11 @@ static double limitFPS = 1.0 / 60.0;
 
 // luz direccional
 DirectionalLight mainLight;
+
 // para declarar varias luces de tipo pointlight
 PointLight pointLights[MAX_POINT_LIGHTS];
 SpotLight spotLights[MAX_SPOT_LIGHTS];
+SpotLight spotLights_aux[MAX_SPOT_LIGHTS]; // Arreglo para guardar variaciones de luces
 
 // Vertex Shader
 static const char *vShader = "shaders/shader_light.vert";
@@ -128,7 +132,6 @@ void calcAverageNormals(unsigned int *indices, unsigned int indiceCount, GLfloat
 
 void CrearDado8Caras()
 {
-
     GLfloat verticesOctaedro[] = {
         // x        y        z        S        T        Nx        Ny        Nz
         // Piramide superior --------------------------------
@@ -188,6 +191,7 @@ void CrearDado8Caras()
         21, 22, 23};
 
     Mesh *dado = new Mesh();
+
     dado->CreateMesh(verticesOctaedro, indices, 192, 24);
     meshList.push_back(dado);
 }
@@ -270,10 +274,10 @@ int main()
     mainWindow.Initialise();
 
     CreateObjects();
-    CrearDado8Caras();
+    //    CrearDado8Caras();
     CreateShaders();
 
-    camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+    camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 3.0f, 0.5f);
 
     brickTexture = Texture("Textures/brick.png");
     brickTexture.LoadTextureA();
@@ -297,12 +301,6 @@ int main()
     Camino_M = Model();
     Camino_M.LoadModel("Models/railroad track.obj");
 
-    // Objetos fijos con luz
-    //    Farol = Model();
-    //    Farol.LoadModel("Models/faro.obj");
-    //    SableLuz = Model();
-    //    SableLuz.LoadModel("Models/LukeSkywalkerLightsaber.obj");
-
     // Coche propio (Vocho)
     Vocho = Model();
     Vocho.LoadModel("Models/vocho.obj");
@@ -316,6 +314,9 @@ int main()
     Llanta_Vocho_der_trasera.LoadModel("Models/vocho_rueda4.obj");
     //    Cofre_Vocho = Model();
     //    Cofre_Vocho.LoadModel("Models/cofre_cybertruck.obj");
+    
+    PistaCarreras = Model();
+    PistaCarreras.LoadModel("Models/pista.obj");
 
     std::vector<std::string> skyboxFaces;
     skyboxFaces.push_back("Textures/Skybox/cupertin-lake_rt.tga");
@@ -338,6 +339,7 @@ int main()
     unsigned int pointLightCount = 0;
 
     unsigned int spotLightCount = 0;
+
     // linterna
     spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,
                               0.0f, 2.0f,
@@ -356,6 +358,22 @@ int main()
                               5.0f);             // edge
     spotLightCount++;
 
+    // Copia de luz del coche mirando al frente
+    spotLights_aux[0] = SpotLight(0.0f, 1.0f, 0.0f,  // R, G, B
+                                  1.0f, 2.0f,        // Light Intensity, Color Intensity
+                                  0.f, 1.0f, -1.0f,  // xpos, ypos, zpos
+                                  -1.0f, 0.0f, 0.0f, // xdir, ydir, zdir
+                                  0.5f, 0.0f, 0.0f,  // con, lin, exp
+                                  5.0f);
+
+    // Luz del coche mirando de reversa
+    spotLights_aux[1] = SpotLight(0.0f, 1.0f, 0.0f, // R, G, B
+                                  1.0f, 2.0f,       // Light Intensity, Color Intensity
+                                  0.f, 1.0f, -4.0f, // xpos, ypos, zpos
+                                  1.0f, 0.0f, 0.0f, // xdir, ydir, zdir
+                                  0.5f, 0.0f, 0.0f, // con, lin, exp
+                                  5.0f);            // edge
+
     // luz de helicóptero
     spotLights[2] = SpotLight(1.0f, 0.0f, 0.f,
                               1.0f, 2.0f,
@@ -365,24 +383,12 @@ int main()
                               5.0f);
     spotLightCount++;
 
-    //    // Luz del faro
-    //    pointLights[0] = PointLight(1.f, 1.f, 0.f, // Amarillo
-    //                                5.0f, 5.0f,
-    //                                5.0f,27.0f,-25.0f, //Posición X, Y, Z
-    //                                0.5f, 0.5f, 0.5f);//Intensidad
-    //    pointLightCount++;
-    //
-    //    //luz del sable de luz
-    //    pointLights[1] = PointLight(0.f, 1.f, 0.f, // Verde
-    //                                5.0f, 5.0f,
-    //                                -14.0f,7.0f,20.0f, //Posición X, Y, Z
-    //                                0.5f, 0.5f, 0.5f);
-    //    pointLightCount++;
-
     GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0,
            uniformSpecularIntensity = 0, uniformShininess = 0;
     GLuint uniformColor = 0;
     glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 1000.0f);
+
+    int cuentaLuzHelicoptero = 0;
 
     // Loop mientras no se cierra la ventana
     while (!mainWindow.getShouldClose())
@@ -408,7 +414,7 @@ int main()
         uniformEyePosition = shaderList[0].GetEyePositionLocation();
         uniformColor = shaderList[0].getColorLocation();
 
-        // informacion en el shader de intensidad especular y brillo
+        // informaci�n en el shader de intensidad especular y brillo
         uniformSpecularIntensity = shaderList[0].GetSpecularIntensityLocation();
         uniformShininess = shaderList[0].GetShininessLocation();
 
@@ -416,15 +422,40 @@ int main()
         glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(camera.calculateViewMatrix()));
         glUniform3f(uniformEyePosition, camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
 
-        // luz ligada a la camara de tipo flash
+        // luz ligada a la c�mara de tipo flash
         glm::vec3 lowerLight = camera.getCameraPosition();
         lowerLight.y -= 0.3f;
         spotLights[0].SetFlash(lowerLight, camera.getCameraDirection());
 
-        // informacion al shader de fuentes de iluminaci�n
+        // informaci�n al shader de fuentes de iluminaci�n
         shaderList[0].SetDirectionalLight(&mainLight);
         shaderList[0].SetPointLights(pointLights, pointLightCount);
-        shaderList[0].SetSpotLights(spotLights, spotLightCount);
+
+        if (mainWindow.getDireccionAuto() < 0)
+        {
+            spotLights[1] = spotLights_aux[0]; // Direccion "de frente" del auto
+            spotLights[1].SetPos(glm::vec3(0.0f + mainWindow.getMovimientoXAuto(), 0.0, mainWindow.getMovimientoZAuto()));
+        }
+        else
+        {
+            spotLights[1] = spotLights_aux[1]; // Direccion "de frente" del auto
+            spotLights[1].SetPos(glm::vec3(0.0f + mainWindow.getMovimientoXAuto(), 0.0, mainWindow.getMovimientoZAuto()));
+        }
+
+        if (cuentaLuzHelicoptero >= 60)
+        {
+            cuentaLuzHelicoptero = 0;
+            mainWindow.alternHelicopteroEncendido();
+        }
+
+        if (mainWindow.isHelicopteroEncendido())
+        {
+            shaderList[0].SetSpotLights(spotLights, spotLightCount);
+        }
+        else
+        {
+            shaderList[0].SetSpotLights(spotLights, spotLightCount - 1); // Se resta -1 para no renderizar la luz del helicoptero
+        }
 
         glm::mat4 model(1.0);
         glm::mat4 modelaux(1.0);
@@ -445,7 +476,7 @@ int main()
 
         // Helicoptero
         model = glm::mat4(1.0);
-        model = glm::translate(model, glm::vec3(mainWindow.getMovimientoXHelicoptero(), 15.0f + mainWindow.getMovimientoYHelicoptero(), -1.0 + mainWindow.getMovimientoZHelicoptero()));
+        model = glm::translate(model, glm::vec3(mainWindow.getMovimientoXHelicoptero(), 15.0f + mainWindow.getMovimientoYHelicoptero(), mainWindow.getMovimientoZHelicoptero()));
         model = glm::scale(model, glm::vec3(2.f, 2.f, 2.f));
         model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
@@ -455,13 +486,11 @@ int main()
 
         // Carroceria
         model = glm::mat4(1.0);
-        model = glm::translate(model, glm::vec3(mainWindow.getMovimientoXAuto(), 0.f, 0.f + mainWindow.getMovimientoZAuto())); // Movimiento del auto
+        model = glm::translate(model, glm::vec3(mainWindow.getMovimientoXAuto(), 0.f, mainWindow.getMovimientoZAuto())); // Movimiento del auto
         model = glm::translate(model, glm::vec3(0.0f, -0.5f, -0.f));
         modelaux = model;
         model = glm::scale(model, glm::vec3(5.f, 5.f, 5.f));
         model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-        //        spotLights[1].SetPos(glm::vec3(0.0f + mainWindow.getMovimientoXAuto(), 0.0, 0.0f + mainWindow.getMovimientoZAuto()));
-        spotLights[1].SetFlash(glm::vec3(0.0f + mainWindow.getMovimientoXAuto(), 0.0, 0.0f + mainWindow.getMovimientoZAuto()), glm::vec3(mainWindow.getDireccionAuto() * 1.0f, 0.0f, 0.0f));
         glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
         glUniform3fv(uniformColor, 1, glm::value_ptr(color));
         Vocho.RenderModel();
@@ -502,15 +531,16 @@ int main()
         glUniform3fv(uniformColor, 1, glm::value_ptr(color));
         Llanta_Vocho_izq_trasera.RenderModel();
 
-        // Dado de 8 caras:
+        // Pista de carreras
         model = glm::mat4(1.0);
-        model = glm::translate(model, glm::vec3(-20.f, 10.0f, 0.f));
-        model = glm::scale(model, glm::vec3(5.f, 5.f, 5.f));
+        model = glm::translate(model, glm::vec3(20.f,0.0f,60.0f));
+        model = glm::scale(model, glm::vec3(0.75f, 0.75f, 0.75f));
+//        model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
         glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-        octaedroTexture.UseTexture();
-        Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
-        meshList[4]->RenderMesh();
-
+        glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+        PistaCarreras.RenderModel();
+        
+        cuentaLuzHelicoptero++;
         glUseProgram(0);
         mainWindow.swapBuffers();
     }

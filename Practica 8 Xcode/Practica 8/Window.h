@@ -25,6 +25,8 @@ public:
     GLfloat getMovimientoYHelicoptero() { return movY_helicoptero; }
     GLfloat getMovimientoZHelicoptero() { return movZ_helicoptero; }
     GLfloat getMovimientoRuedas() { return mov_ruedas; }
+    GLfloat isHelicopteroEncendido() { return helicopteroEncendido; }
+    void alternHelicopteroEncendido() { helicopteroEncendido = !helicopteroEncendido; }
     
 	~Window();
 private: 
@@ -45,6 +47,8 @@ private:
     GLfloat movY_helicoptero;
     GLfloat movZ_helicoptero;
     GLfloat mov_ruedas;
+    bool helicopteroEncendido;
+    
 	bool mouseFirstMoved;
 	static void ManejaTeclado(GLFWwindow* window, int key, int code, int action, int mode);
 	static void ManejaMouse(GLFWwindow* window, double xPos, double yPos);

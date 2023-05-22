@@ -9,23 +9,26 @@ Window::Window()
 		keys[i] = 0;
 	}
 }
+
 Window::Window(GLint windowWidth, GLint windowHeight)
 {
 	width = windowWidth;
 	height = windowHeight;
 	muevex = 2.0f;
-    movX_helicoptero = 0.0f;
-    movY_helicoptero = 0.0f;
-    movZ_helicoptero = 0.0f;
-    movimientoXAuto = 0.0f;
-    movimientoZAuto = 0.0f;
-    direccionAuto = -1.0f;
-    
+	movX_helicoptero = 0.0f;
+	movY_helicoptero = 0.0f;
+	movZ_helicoptero = 0.0f;
+	movimientoXAuto = 0.0f;
+	movimientoZAuto = 0.0f;
+	direccionAuto = -1.0f;
+    autoManual = false;
+
 	for (size_t i = 0; i < 1024; i++)
 	{
 		keys[i] = 0;
 	}
 }
+
 int Window::Initialise()
 {
 	// Inicializaci�n de GLFW
@@ -111,34 +114,54 @@ void Window::ManejaTeclado(GLFWwindow *window, int key, int code, int action, in
 	{
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
-    
-    // AUTO -------------------
+
+	// AUTO -------------------
 	// Movimiento X del auto
-	if (key == GLFW_KEY_V)
-	{
-		theWindow->movimientoXAuto += 10.0;
-		theWindow->mov_ruedas += 5.0;
-		theWindow->direccionAuto = 1.0f; // Coloca la luz mirando hacia adelante
-	}
-	if (key == GLFW_KEY_B)
-	{
-		theWindow->movimientoXAuto -= 10.0;
-		theWindow->mov_ruedas -= 5.0;
-		theWindow->direccionAuto = -1.0f; // Coloca la luz mirando hacia atras
-	}
-	// Movimiento Z del auto
 	if (key == GLFW_KEY_N)
 	{
-		theWindow->movimientoZAuto += 10.0;
+		theWindow->movimientoXAuto += 2.0;
 		theWindow->mov_ruedas += 5.0;
+		theWindow->direccionAuto = 1.0f; // Coloca la luz mirando hacia adelante
+		printf("-------------------\n");
+		printf("XAuto: %f , ZAuto: %f\n", theWindow->movimientoXAuto, theWindow->movimientoZAuto);
+	}
+	if (key == GLFW_KEY_J)
+	{
+		theWindow->movimientoXAuto -= 2.0;
+		theWindow->mov_ruedas -= 5.0;
+		theWindow->direccionAuto = -1.0f; // Coloca la luz mirando hacia atras
+		printf("-------------------\n");
+		printf("XAuto: %f , ZAuto: %f\n", theWindow->movimientoXAuto, theWindow->movimientoZAuto);
+	}
+	// Movimiento Z del auto
+	if (key == GLFW_KEY_B)
+	{
+		theWindow->movimientoZAuto += 2.0;
+		theWindow->mov_ruedas += 5.0;
+		printf("-------------------\n");
+		printf("XAuto: %f , ZAuto: %f\n", theWindow->movimientoXAuto, theWindow->movimientoZAuto);
 	}
 	if (key == GLFW_KEY_M)
 	{
-		theWindow->movimientoZAuto -= 10.0;
+		theWindow->movimientoZAuto -= 2.0;
 		theWindow->mov_ruedas -= 5.0;
+		printf("-------------------\n");
+		printf("XAuto: %f , ZAuto: %f\n", theWindow->movimientoXAuto, theWindow->movimientoZAuto);
 	}
+
+    // Se reinicia el movimiento (automatico) del auto al presionar F%
+    if (action == GLFW_RELEASE && key == GLFW_KEY_F5)
+    {
+        theWindow->setResetFlag(true);
+    }
     
-    // HELICOPTERO ---------------
+	// Se activa el movimiento del "manual" del auto para realizar DEBUG de la pista
+	if (action == GLFW_RELEASE && key == GLFW_KEY_Z)
+	{
+		theWindow->toggleAutoManual();
+	}
+
+	// HELICOPTERO ---------------
 	// Movimiento X del helicoptero
 	if (key == GLFW_KEY_R)
 	{

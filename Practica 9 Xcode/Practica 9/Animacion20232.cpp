@@ -71,6 +71,8 @@ Texture pisoTexture;
 Texture AgaveTexture;
 Texture FlechaTexture;
 Texture octaedroTexture;
+Texture aguaTexture;
+Texture humoAutoTexture;
 
 Model Kitt_M;
 Model Llanta_M;
@@ -149,72 +151,6 @@ void calcAverageNormals(unsigned int *indices, unsigned int indiceCount, GLfloat
         vertices[nOffset + 1] = vec.y;
         vertices[nOffset + 2] = vec.z;
     }
-}
-
-void CrearDado8Caras()
-{
-    GLfloat verticesOctaedro[] = {
-        // x        y        z        S        T        Nx        Ny        Nz
-        // Piramide superior --------------------------------
-        // Cara 1 - A, F, G
-        0.f, 1.f, 0.f, 0.4940153616873, 0.7458299758063, 1.0f, -1.0f, -1.0f,   // 0 - A
-        -1.f, 0.f, 0.f, 0.2436577972163f, 0.498299814814f, 1.0f, -1.0f, -1.0f, // 1 - F
-        0.f, 0.f, 1.f, 0.7521710750057, 0.4978370540927, 1.0f, -1.0f, -1.0f,   // 2 - G
-        // Cara 2 - A, G, H
-        0.f, 1.f, 0.f, 0.0f, 0.25f, -1.0f, -1.0f, -1.0f,                        // 3 - A
-        0.f, 0.f, 1.f, 0.4971259273646f, 0.2494817895031f, -1.0f, -1.0f, -1.0f, // 4 - G
-        1.f, 0.f, 0.f, 0.2436577972163f, 0.498299814814f, -1.0f, -1.0f, -1.0f,  // 5 - H
-        // Cara 3 - A, H, I
-        0.f, 1.f, 0.f, 0, 0.7459840013939, -1.0f, -1.0f, 1.0f,                // 6 - A
-        1.f, 0.f, 0.f, 0.24, 0.5, -1.0f, -1.0f, 1.0f,                         // 7 - H
-        0.f, 0.f, -1.f, 0.4905520219476, 0.7464275747373, -1.0f, -1.0f, 1.0f, // 8 - I
-        // Cara 4 - A, I, F
-        0.f, 1.f, 0.f, 0.4971259273646, 0.2494817895031, 1.0f, -1.0f, 1.0f,  // 9 - A
-        0.f, 0.f, -1.f, 0.7521710750057, 0.4978370540927, 1.0f, -1.0f, 1.0f, // 10 - I
-        -1.f, 0.f, 0.f, 0.2447077950412, 0.4971758770058, 1.0f, -1.0f, 1.0f, // 11 - F
-        // Piramide inferior --------------------------------
-        // Cara 5 - B, F, G
-        0.f, -1.f, 0.f, 0.7527437890022, 0.9949471586345, 1.0f, 1.0f, -1.0f, // 12 - B
-        -1.f, 0.f, 0.f, 1.f, 0.75, 1.0f, 1.0f, -1.0f,                        // 13 - F
-        0.f, 0.f, 1.f, 0.5, 0.75, 1.0f, 1.0f, -1.0f,                         // 14 - G
-        // Cara 6 - B, G, H
-        0.f, -1.f, 0.f, 0.9928426579919, 0.248680864686, -1.0f, 1.0f, -1.0f, // 15 - B
-        0.f, 0.f, 1.f, 0.7515983809738, 0.495821007847, -1.0f, 1.0f, -1.0f,  // 16 - G
-        1.f, 0.f, 0.f, 0.5, 0.25, -1.0f, 1.0f, -1.0f,                        // 17 - H
-        // Cara 7 - B, H, I
-        0.f, -1.f, 0.f, 0.9977169711349, 0.74578176779, -1.0f, 1.0f, 1.0f,   // 18 - B
-        1.f, 0.f, 0.f, 0.7518823834043, 0.500154589373, -1.0f, 1.0f, 1.0f,   // 19 - H
-        0.f, 0.f, -1.f, 0.4994164792683, 0.7452641052236, -1.0f, 1.0f, 1.0f, // 20 - I
-        // Cara 8 - B, I, F
-        0.f, -1.f, 0.f, 0.7524450151198, 0.0016302156309, 1.0f, 1.0f, 1.0f, // 21 - B
-        0.f, 0.f, -1.f, 0.994108518509, 0.248172089342, 1.0f, 1.0f, 1.0f,   // 22 - I
-        -1.f, 0.f, 0.f, 0.4997324975772, 0.2480514725787, 1.0f, 1.0f, 1.0f, // 23 - F
-    };
-
-    unsigned int indices[] = {
-        // Piramide superior --------------------------------
-        // Cara 1 - A, F, G
-        0, 1, 2,
-        // Cara 2 - A, G, H
-        3, 4, 5,
-        // Cara 3 - A, H, I
-        6, 7, 8,
-        // Cara 4 - A, I, F
-        9, 10, 11,
-        // Piramide inferior --------------------------------
-        // Cara 5 - B, F, G
-        12, 13, 14,
-        // Cara 6 - B, G, H
-        15, 16, 17,
-        // Cara 7 - B, H, I
-        18, 19, 20,
-        // Cara 8 - B, I, F
-        21, 22, 23};
-
-    Mesh *dado = new Mesh();
-
-    dado->CreateMesh(verticesOctaedro, indices, 192, 24);
-    meshList.push_back(dado);
 }
 
 void CreateObjects()
@@ -331,6 +267,30 @@ void CreateObjects()
         -0.5f, 0.0f, -0.5f,
         0.0f, 1.0f, 0.0f,
         -1.0f, 0.0f};
+    
+    unsigned int aguaIndices[] = {
+        0, 1, 2,
+        0, 2, 3,
+    };
+    
+    GLfloat aguaVertices[] = {
+        -0.5f, 0.0f, 0.5f,        0.0f, 0.0f,        0.0f, -1.0f, 0.0f,
+        0.5f, 0.0f, 0.5f,        1.0f, 0.0f,        0.0f, -1.0f, 0.0f,
+        0.5f, 0.0f, -0.5f,        1.0f, 1.0f,        0.0f, -1.0f, 0.0f,
+        -0.5f, 0.0f, -0.5f,        0.0f, 1.0f,        0.0f, -1.0f, 0.0f,
+    };
+    
+    unsigned int humoIndices[] = {
+        0, 1, 2,
+        0, 2, 3,
+    };
+    
+    GLfloat humoVertices[] = {
+        -0.5f, 0.0f, 0.5f,        0.0f, 0.0f,        0.0f, -1.0f, 0.0f,
+        0.5f, 0.0f, 0.5f,        1.0f, 0.0f,        0.0f, -1.0f, 0.0f,
+        0.5f, 0.0f, -0.5f,        1.0f, 1.0f,        0.0f, -1.0f, 0.0f,
+        -0.5f, 0.0f, -0.5f,        0.0f, 1.0f,        0.0f, -1.0f, 0.0f,
+    };
 
     Mesh *obj1 = new Mesh();
 
@@ -352,6 +312,14 @@ void CreateObjects()
     Mesh *obj5 = new Mesh();
     obj5->CreateMesh(flechaVertices, flechaIndices, 32, 6);
     meshList.push_back(obj5);
+    
+    Mesh* obj6 = new Mesh();
+    obj6->CreateMesh(aguaVertices, aguaIndices, 32, 6);
+    meshList.push_back(obj6);
+    
+    Mesh* obj7 = new Mesh();
+    obj7->CreateMesh(humoVertices, humoIndices, 32, 6);
+    meshList.push_back(obj7);
 }
 
 void CreateShaders()
@@ -368,7 +336,6 @@ int main()
     mainWindow.Initialise();
 
     CreateObjects();
-    CrearDado8Caras();
     CreateShaders();
 
     camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 2.5f, 0.5f);
@@ -390,11 +357,17 @@ int main()
     Blackhawk_M = Model();
     Blackhawk_M.LoadModel("Models/helicoptero.obj");
     Helice = Model();
-    Helice.LoadModel("Models/Helice");
+    Helice.LoadModel("Models/Helice.obj");
     Camino_M = Model();
     Camino_M.LoadModel("Models/railroad track.obj");
     Globito = Model();
     Globito.LoadModel("Models/globito.obj");
+    
+    // Texturas animadas
+    aguaTexture = Texture("Textures/aguaMar.png");
+    aguaTexture.LoadTextureA();
+    humoAutoTexture = Texture("Textures/humoAuto.png");
+    humoAutoTexture.LoadTextureA();
 
     // Coche propio (Vocho)
     Vocho = Model();
@@ -504,19 +477,17 @@ int main()
     glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 1000.0f);
 
     // Variables Helicoptero
-    float movXHelicoptero = 0.0f;
     float movZHelicoptero = 0.0f;
     float movYHelicoptero = 0.0f;
     movHelicopteroOffset = 0.2f;
     giroHelicoptero = 0.0f;
     float giroHelices = 0.0f;
     giroHelicopteroOffset = 0.5f;
-    float giroHelicesOffset = 0.8f;
+    float giroHelicesOffset = 10.f;
     int direccionHelicoptero = 1;
     avanzaHelicoptero = true;
     int nVueltasHelicop = 0;
     int cuentaLuzHelicoptero = 0;
-    int caseMovHelicop = 0;
 
     // Variables movimiento coche
     movCocheX = 0.0f;
@@ -542,8 +513,8 @@ int main()
     float movGlobitoZ = 0.0f;
     float anguloGlobito = 0.0f;
     float anguloGlobitoOffset = 0.1f;
-    float aGlobito = 0.1f;  // Distancia entre las espirales
-    float bGlobito = 0.02f; // Factor de crecimiento
+    float aGlobito = 0.5f; // Distancia entre las espirales
+    float bGlobito = 0.1f; // Factor de crecimiento
 
     // Loop mientras no se cierra la ventana
     while (!mainWindow.getShouldClose())
@@ -604,6 +575,66 @@ int main()
 
         meshList[2]->RenderMesh();
 
+        movYHelicoptero += giroHelicopteroOffset * deltaTime;
+        
+            // Avanza hacia adelante hasta topar con "pared"
+        if (avanzaHelicoptero)
+        {
+            if (direccionHelicoptero == 1 && movZHelicoptero > -500.0f)
+            {
+                movZHelicoptero -= movHelicopteroOffset * deltaTime;
+            }
+            else if (direccionHelicoptero == -1 && movZHelicoptero < 500.0f)
+            {
+                movZHelicoptero += movHelicopteroOffset * deltaTime;
+            }
+            else
+            {
+                avanzaHelicoptero = false;
+            }
+        }
+        
+            // Giro del helicoptero al estar parado
+        if (!avanzaHelicoptero)
+        {
+            if ((giroHelicoptero - nVueltasHelicop * 180) < 180.0f)
+            {
+                giroHelicoptero += giroHelicopteroOffset * deltaTime;
+            }
+            else
+            {
+                nVueltasHelicop++;
+                avanzaHelicoptero = true;
+                direccionHelicoptero = direccionHelicoptero * -1;
+            }
+        }
+        
+        giroHelices += giroHelicesOffset * deltaTime;
+        
+            // Helicoptero
+        model = glm::mat4(1.0);
+            // Si se multiplica por una constante afuera del sin se hace mas alta la onda, y si se multiplica dentro de la funcio radians, se hace el movimiento mas rapido
+        model = glm::translate(model, glm::vec3(-1.0, 50.0f + (15 * sin(glm::radians(movZHelicoptero * 0.5)) + (15 * sin(glm::radians(movYHelicoptero)))), -1.0 - movZHelicoptero * 0.5));
+        modelaux = model;
+        model = glm::scale(model, glm::vec3(0.6f, 0.6f, 0.6f));
+        model = glm::rotate(model, giroHelicoptero * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+        Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+            // color = glm::vec3(0.0f, 1.0f, 0.0f);
+            // glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+        spotLights[2].SetPos(glm::vec3(0.0f, 7.0f + sin(glm::radians(movYHelicoptero)), 0.0f + movZHelicoptero));
+        glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+        Blackhawk_M.RenderModel();
+        
+            // Helice helicoptero
+        model = modelaux;
+        model = glm::rotate(model, glm::radians(giroHelices), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::translate(model, glm::vec3(0.0f, 1.2f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.6f, 0.6f, 0.6f));
+        glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+        Helice.RenderModel();
+        
+        
         // Botón de reset (F5)
         if (mainWindow.resetCarro())
         {
@@ -880,7 +911,7 @@ int main()
             if (movCocheX < -7.f)
             {
                 movCocheX += movOffset * deltaTime * .7;
-                movCocheY += movOffset * deltaTime * .3;
+                movCocheY += movOffset * deltaTime * .5;
                 rotllanta += rotllantaOffset * deltaTime;
                 spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0 + movCocheY, 0.0f + movCocheZ));
             }
@@ -895,10 +926,11 @@ int main()
         // Se endereza
         case 16:
 
-            if (giroAutoZ > -45 + giroAutoZAux)
+            if (giroAutoZ > -30 + giroAutoZAux)
             {
                 giroAutoZ -= giroAutoOffset * deltaTime;
                 movCocheX += movOffset * deltaTime * .7;
+                movCocheY += movOffset * deltaTime * .2;
                 rotllanta += rotllantaOffset * deltaTime;
                 spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0 + movCocheY, 0.0f + movCocheZ));
             }
@@ -912,7 +944,7 @@ int main()
         // Recto en +X
         case 17:
 
-            if (movCocheX < 40.0f)
+            if (movCocheX < 120.0f)
             {
                 movCocheX += movOffset * deltaTime;
                 rotllanta += rotllantaOffset * deltaTime;
@@ -925,6 +957,60 @@ int main()
             }
 
             break;
+                    
+        // Baja rampa
+            case 18:
+                
+                if (giroAutoZ > -45 + giroAutoZAux)
+                {
+                    movCocheX += movOffset * deltaTime * .7;
+                    movCocheY -= movOffset * deltaTime * .3;
+                    giroAutoZ -= giroAutoOffset * deltaTime;
+                    rotllanta += rotllantaOffset * deltaTime;
+                    spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0 + movCocheY, 0.0f + movCocheZ));
+                }
+                else
+                {
+                    curvaPista = 19;
+                }
+                
+                break;
+                
+            // Baja rampa sin girar en Z
+            case 19:
+                
+                if (movCocheX < 130.f)
+                {
+                    movCocheX += movOffset * deltaTime * .7;
+                    movCocheY -= movOffset * deltaTime * .5;
+                    rotllanta += rotllantaOffset * deltaTime;
+                    spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0 + movCocheY, 0.0f + movCocheZ));
+                }
+                else
+                {
+                    curvaPista = 20;
+                    giroAutoZAux = giroAutoZ;
+                }
+                
+                break;
+                
+            // Se endereza
+            case 20:
+                
+                if (giroAutoZ < +40 + giroAutoZAux)
+                {
+                    giroAutoZ += giroAutoOffset * deltaTime;
+                    movCocheX += movOffset * deltaTime * .7;
+                    movCocheY -= movOffset * deltaTime * .2;
+                    rotllanta += rotllantaOffset * deltaTime;
+                    spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0 + movCocheY, 0.0f + movCocheZ));
+                }
+                else
+                {
+                    curvaPista = 21;
+                }
+                
+                break;
 
         default:
             break;
@@ -982,82 +1068,34 @@ int main()
 
         // Movimiento del helicoptero:
 
-        // Luz del helicoptero
-        if (cuentaLuzHelicoptero >= 60)
-        {
-            cuentaLuzHelicoptero = 0;
-            mainWindow.alternHelicopteroEncendido();
-        }
-
-        if (mainWindow.isHelicopteroEncendido())
-        {
-            shaderList[0].SetSpotLights(spotLights, spotLightCount);
-        }
-        else
-        {
-            shaderList[0].SetSpotLights(spotLights, spotLightCount - 1); // Se resta -1 para no renderizar la luz del helicoptero
-        }
-
-        cuentaLuzHelicoptero++;
+//        // Luz del helicoptero
+//        if (cuentaLuzHelicoptero >= 60)
+//        {
+//            cuentaLuzHelicoptero = 0;
+//            mainWindow.alternHelicopteroEncendido();
+//        }
+//
+//        if (mainWindow.isHelicopteroEncendido())
+//        {
+//            shaderList[0].SetSpotLights(spotLights, spotLightCount);
+//        }
+//        else
+//        {
+//            shaderList[0].SetSpotLights(spotLights, spotLightCount - 1); // Se resta -1 para no renderizar la luz del helicoptero
+//        }
+//
+//        cuentaLuzHelicoptero++;
 
         // movimiento vertical:
-        movYHelicoptero += giroHelicopteroOffset * deltaTime;
-
-        // Avanza hacia adelante hasta topar con "pared"
-        if (avanzaHelicoptero)
-        {
-            if (direccionHelicoptero == 1 && movZHelicoptero > -500.0f)
-            {
-                movZHelicoptero -= movHelicopteroOffset * deltaTime;
-            }
-            else if (direccionHelicoptero == -1 && movZHelicoptero < 500.0f)
-            {
-                movZHelicoptero += movHelicopteroOffset * deltaTime;
-            }
-            else
-            {
-                avanzaHelicoptero = false;
-            }
-        }
-
-        // Giro del helicoptero al estar parado
-        if (!avanzaHelicoptero)
-        {
-            if ((giroHelicoptero - nVueltasHelicop * 180) < 180.0f)
-            {
-                giroHelicoptero += giroHelicopteroOffset * deltaTime;
-            }
-            else
-            {
-                nVueltasHelicop++;
-                avanzaHelicoptero = true;
-                direccionHelicoptero = direccionHelicoptero * -1;
-            }
-        }
-
-        giroHelices += giroHelicesOffset * deltaTime;
-
-        // Helicoptero
-        model = glm::mat4(1.0);
-        // Si se multiplica por una constante afuera del sin se hace mas alta la onda, y si se multiplica dentro de la funcio radians, se hace el movimiento mas rapido
-        model = glm::translate(model, glm::vec3(-1.0, 50.0f + (15 * sin(glm::radians(movZHelicoptero * 0.5)) + (15 * sin(glm::radians(movYHelicoptero)))), -1.0 - movZHelicoptero * 0.5));
-        model = glm::scale(model, glm::vec3(0.6f, 0.6f, 0.6f));
-        model = glm::rotate(model, giroHelicoptero * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-        Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
-        // color = glm::vec3(0.0f, 1.0f, 0.0f);
-        // glUniform3fv(uniformColor, 1, glm::value_ptr(color));
-        spotLights[2].SetPos(glm::vec3(0.0f, 7.0f + sin(glm::radians(movYHelicoptero)), 0.0f + movZHelicoptero));
-        glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-        Blackhawk_M.RenderModel();
 
         // Globito
         // recorrido de un tornado con ecuación del espiral de Arquimedes
-        // Se topa la altura y distancia, para que sea facilmente visible
-        if (movGlobitoY < 150.0f && movGlobitoZ < 150.0f)
+        // Se topa la altura para que sea facilmente visible
+        if (movGlobitoY < 50.0f)
         {
             movGlobitoX = (aGlobito + bGlobito * anguloGlobito) * cos(anguloGlobito);
-            movGlobitoY = (aGlobito + bGlobito * anguloGlobito) * sin(anguloGlobito);
-            movGlobitoZ = anguloGlobito * 2.0f;
+            movGlobitoZ = (aGlobito + bGlobito * anguloGlobito) * sin(anguloGlobito);
+            movGlobitoY = anguloGlobito * 0.5f;
             anguloGlobito += anguloGlobitoOffset * deltaTime;
         }
         else
@@ -1122,6 +1160,29 @@ int main()
         FlechaTexture.UseTexture();
         // Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
         meshList[4]->RenderMesh();
+        
+        // Agua
+        model = glm::mat4(1.0);
+        model = glm::translate(model, glm::vec3(100.f, 1.9f, 306.0f));
+        model = glm::scale(model, glm::vec3(65.0f, 65.0f, 65.0f));
+        glUniform2fv(uniformTextureOffset, 1, glm::value_ptr(toffset));
+        glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+        aguaTexture.UseTexture();
+        meshList[5]->RenderMesh();
+        
+        // Humo auto
+        model = modelaux;
+        model = glm::rotate(model, glm::radians(giroAutoZ), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::rotate(model, glm::radians(giroAutoY), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(giroAutoX), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::translate(model, glm::vec3(10.f, 0.f, 0.0f));
+        model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, glm::vec3(7.0f, 7.0f, 7.0f));
+        glUniform2fv(uniformTextureOffset, 1, glm::value_ptr(toffset));
+        glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+        humoAutoTexture.UseTexture();
+        meshList[6]->RenderMesh();
+        
         glDisable(GL_BLEND);
 
         glUseProgram(0);

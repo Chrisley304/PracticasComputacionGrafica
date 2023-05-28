@@ -46,7 +46,7 @@ int Window::Initialise()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
 	// CREAR VENTANA
-	mainWindow = glfwCreateWindow(width, height, "Practica 8 - Christian Leyva", NULL, NULL);
+	mainWindow = glfwCreateWindow(width, height, "Practica 9 - Christian Leyva", NULL, NULL);
 
 	if (!mainWindow)
 	{

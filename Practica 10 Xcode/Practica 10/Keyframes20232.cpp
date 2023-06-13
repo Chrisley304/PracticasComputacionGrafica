@@ -72,6 +72,9 @@ Model Camino_M;
 Model Blackhawk_M;
 Model Dado_M;
 
+Model Rampa;
+Model Skateboard;
+
 Skybox skybox;
 
 // materiales
@@ -314,13 +317,13 @@ void CreateShaders()
 bool animacion = false;
 
 // NEW// Keyframes
-float posXavion = 2.0, posYavion = 5.0, posZavion = -3.0;
+float posXavion = 0.0, posYavion = 0.0, posZavion = 20.0;
 float movAvion_x = 0.0f, movAvion_y = 0.0f;
 float giroAvion = 0;
 
 #define MAX_FRAMES 30
 int i_max_steps = 90; // Se deja en 90 porque no da problema, pero si se llega a laggear o ver fea la animaci�n, hay que bajar este valor.
-int i_curr_steps = 123;
+int i_curr_steps = 16;
 typedef struct _frame
 {
 	// Variables para GUARDAR Key Frames
@@ -334,7 +337,7 @@ typedef struct _frame
 } FRAME;
 
 FRAME KeyFrame[MAX_FRAMES];
-int FrameIndex = 123; // introducir datos
+int FrameIndex = 16; // introducir datos
 bool play = false;
 int playIndex = 0;
 
@@ -414,26 +417,19 @@ int main()
 
 	camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 0.5f, 0.5f);
 
-	brickTexture = Texture("Textures/brick.png");
-	brickTexture.LoadTextureA();
-	dirtTexture = Texture("Textures/dirt.png");
-	dirtTexture.LoadTextureA();
-	plainTexture = Texture("Textures/plain.png");
-	plainTexture.LoadTextureA();
-	pisoTexture = Texture("Textures/piso.tga");
-	pisoTexture.LoadTextureA();
-	AgaveTexture = Texture("Textures/Agave.tga");
-	AgaveTexture.LoadTextureA();
-	FlechaTexture = Texture("Textures/flechas.tga");
-	FlechaTexture.LoadTextureA();
-	Kitt_M = Model();
-	Kitt_M.LoadModel("Models/kitt.obj");
-	Llanta_M = Model();
-	Llanta_M.LoadModel("Models/k_rueda.3ds");
-	Blackhawk_M = Model();
-	Blackhawk_M.LoadModel("Models/uh60.obj");
-	Camino_M = Model();
-	Camino_M.LoadModel("Models/railroad track.obj");
+    brickTexture = Texture("Textures/brick.png");
+    brickTexture.LoadTextureA();
+    dirtTexture = Texture("Textures/dirt.png");
+    dirtTexture.LoadTextureA();
+    plainTexture = Texture("Textures/plain.png");
+    plainTexture.LoadTextureA();
+    pisoTexture = Texture("Textures/piso.tga");
+    pisoTexture.LoadTextureA();
+    Rampa = Model();
+    Rampa.LoadModel("Models/rampa.obj");
+    Skateboard = Model();
+    Skateboard.LoadModel("Models/skateboard_mrbeast.obj");
+    
 
 	std::vector<std::string> skyboxFaces;
 	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_rt.tga");
@@ -491,503 +487,75 @@ int main()
 	rotllantaOffset = 5.0f;
 	avanza = true;
 
-	glm::vec3 posblackhawk = glm::vec3(2.0f, 0.0f, 0.0f);
+	glm::vec3 posSkate = glm::vec3(2.0f, 0.0f, 0.0f);
 
 	// KEYFRAMES DECLARADOS INICIALES
 	// Movimiento senoidal del avion hasta llegar a X = 300, despues da vuelta en 180° y regresa a X = 0
 
-	KeyFrame[0].movAvion_x = 0.0f;
-	KeyFrame[0].movAvion_y = 0.0f;
-	KeyFrame[0].giroAvion = 0;
-
-	KeyFrame[1].movAvion_x = 5.0f;
-	KeyFrame[1].movAvion_y = 10.0f;
-	KeyFrame[1].giroAvion = 0;
-
-	KeyFrame[2].movAvion_x = 10.0f;
-	KeyFrame[2].movAvion_y = 0.0f;
-	KeyFrame[2].giroAvion = 0;
-
-	KeyFrame[3].movAvion_x = 15.0f;
-	KeyFrame[3].movAvion_y = -10.0f;
-	KeyFrame[3].giroAvion = 0;
-
-	KeyFrame[4].movAvion_x = 20.0f;
-	KeyFrame[4].movAvion_y = 0.0f;
-	KeyFrame[4].giroAvion = 0;
-
-	KeyFrame[5].movAvion_x = 25.0f;
-	KeyFrame[5].movAvion_y = 10.0f;
-	KeyFrame[5].giroAvion = 0;
-
-	KeyFrame[6].movAvion_x = 30.0f;
-	KeyFrame[6].movAvion_y = 0.0f;
-	KeyFrame[6].giroAvion = 0;
-
-	KeyFrame[7].movAvion_x = 35.0f;
-	KeyFrame[7].movAvion_y = -10.0f;
-	KeyFrame[7].giroAvion = 0;
-
-	KeyFrame[8].movAvion_x = 40.0f;
-	KeyFrame[8].movAvion_y = 0.0f;
-	KeyFrame[8].giroAvion = 0;
-
-	KeyFrame[9].movAvion_x = 45.0f;
-	KeyFrame[9].movAvion_y = 10.0f;
-	KeyFrame[9].giroAvion = 0;
-
-	KeyFrame[10].movAvion_x = 50.0f;
-	KeyFrame[10].movAvion_y = 0.0f;
-	KeyFrame[10].giroAvion = 0;
-
-	KeyFrame[11].movAvion_x = 55.0f;
-	KeyFrame[11].movAvion_y = -10.0f;
-	KeyFrame[11].giroAvion = 0;
-
-	KeyFrame[12].movAvion_x = 60.0f;
-	KeyFrame[12].movAvion_y = 0.0f;
-	KeyFrame[12].giroAvion = 0;
-
-	KeyFrame[13].movAvion_x = 65.0f;
-	KeyFrame[13].movAvion_y = 10.0f;
-	KeyFrame[13].giroAvion = 0;
-
-	KeyFrame[14].movAvion_x = 70.0f;
-	KeyFrame[14].movAvion_y = 0.0f;
-	KeyFrame[14].giroAvion = 0;
-
-	KeyFrame[15].movAvion_x = 75.0f;
-	KeyFrame[15].movAvion_y = -10.0f;
-	KeyFrame[15].giroAvion = 0;
-
-	KeyFrame[16].movAvion_x = 80.0f;
-	KeyFrame[16].movAvion_y = 0.0f;
-	KeyFrame[16].giroAvion = 0;
-
-	KeyFrame[17].movAvion_x = 85.0f;
-	KeyFrame[17].movAvion_y = 10.0f;
-	KeyFrame[17].giroAvion = 0;
-
-	KeyFrame[18].movAvion_x = 90.0f;
-	KeyFrame[18].movAvion_y = 0.0f;
-	KeyFrame[18].giroAvion = 0;
-
-	KeyFrame[19].movAvion_x = 95.0f;
-	KeyFrame[19].movAvion_y = -10.0f;
-	KeyFrame[19].giroAvion = 0;
-
-	KeyFrame[20].movAvion_x = 100.0f;
-	KeyFrame[20].movAvion_y = 0.0f;
-	KeyFrame[20].giroAvion = 0;
-
-	KeyFrame[21].movAvion_x = 105.0f;
-	KeyFrame[21].movAvion_y = 10.0f;
-	KeyFrame[21].giroAvion = 0;
-
-	KeyFrame[22].movAvion_x = 110.0f;
-	KeyFrame[22].movAvion_y = 0.0f;
-	KeyFrame[22].giroAvion = 0;
-
-	KeyFrame[23].movAvion_x = 115.0f;
-	KeyFrame[23].movAvion_y = -10.0f;
-	KeyFrame[23].giroAvion = 0;
-
-	KeyFrame[24].movAvion_x = 120.0f;
-	KeyFrame[24].movAvion_y = 0.0f;
-	KeyFrame[24].giroAvion = 0;
-
-	KeyFrame[25].movAvion_x = 125.0f;
-	KeyFrame[25].movAvion_y = 10.0f;
-	KeyFrame[25].giroAvion = 0;
-
-	KeyFrame[26].movAvion_x = 130.0f;
-	KeyFrame[26].movAvion_y = 0.0f;
-	KeyFrame[26].giroAvion = 0;
-
-	KeyFrame[27].movAvion_x = 135.0f;
-	KeyFrame[27].movAvion_y = -10.0f;
-	KeyFrame[27].giroAvion = 0;
-
-	KeyFrame[28].movAvion_x = 140.0f;
-	KeyFrame[28].movAvion_y = 0.0f;
-	KeyFrame[28].giroAvion = 0;
-
-	KeyFrame[29].movAvion_x = 145.0f;
-	KeyFrame[29].movAvion_y = 10.0f;
-	KeyFrame[29].giroAvion = 0;
-
-	KeyFrame[30].movAvion_x = 150.0f;
-	KeyFrame[30].movAvion_y = 0.0f;
-	KeyFrame[30].giroAvion = 0;
-
-	KeyFrame[31].movAvion_x = 155.0f;
-	KeyFrame[31].movAvion_y = -10.0f;
-	KeyFrame[31].giroAvion = 0;
-
-	KeyFrame[32].movAvion_x = 160.0f;
-	KeyFrame[32].movAvion_y = 0.0f;
-	KeyFrame[32].giroAvion = 0;
-
-	KeyFrame[33].movAvion_x = 165.0f;
-	KeyFrame[33].movAvion_y = 10.0f;
-	KeyFrame[33].giroAvion = 0;
-
-	KeyFrame[34].movAvion_x = 170.0f;
-	KeyFrame[34].movAvion_y = 0.0f;
-	KeyFrame[34].giroAvion = 0;
-
-	KeyFrame[35].movAvion_x = 175.0f;
-	KeyFrame[35].movAvion_y = -10.0f;
-	KeyFrame[35].giroAvion = 0;
-
-	KeyFrame[36].movAvion_x = 180.0f;
-	KeyFrame[36].movAvion_y = 0.0f;
-	KeyFrame[36].giroAvion = 0;
-
-	KeyFrame[37].movAvion_x = 185.0f;
-	KeyFrame[37].movAvion_y = 10.0f;
-	KeyFrame[37].giroAvion = 0;
-
-	KeyFrame[38].movAvion_x = 190.0f;
-	KeyFrame[38].movAvion_y = 0.0f;
-	KeyFrame[38].giroAvion = 0;
-
-	KeyFrame[39].movAvion_x = 195.0f;
-	KeyFrame[39].movAvion_y = -10.0f;
-	KeyFrame[39].giroAvion = 0;
-
-	KeyFrame[40].movAvion_x = 200.0f;
-	KeyFrame[40].movAvion_y = 0.0f;
-	KeyFrame[40].giroAvion = 0;
-
-	KeyFrame[41].movAvion_x = 205.0f;
-	KeyFrame[41].movAvion_y = 10.0f;
-	KeyFrame[41].giroAvion = 0;
-
-	KeyFrame[42].movAvion_x = 210.0f;
-	KeyFrame[42].movAvion_y = 0.0f;
-	KeyFrame[42].giroAvion = 0;
-
-	KeyFrame[43].movAvion_x = 215.0f;
-	KeyFrame[43].movAvion_y = -10.0f;
-	KeyFrame[43].giroAvion = 0;
-
-	KeyFrame[44].movAvion_x = 220.0f;
-	KeyFrame[44].movAvion_y = 0.0f;
-	KeyFrame[44].giroAvion = 0;
-
-	KeyFrame[45].movAvion_x = 225.0f;
-	KeyFrame[45].movAvion_y = 10.0f;
-	KeyFrame[45].giroAvion = 0;
-
-	KeyFrame[46].movAvion_x = 230.0f;
-	KeyFrame[46].movAvion_y = 0.0f;
-	KeyFrame[46].giroAvion = 0;
-
-	KeyFrame[47].movAvion_x = 235.0f;
-	KeyFrame[47].movAvion_y = -10.0f;
-	KeyFrame[47].giroAvion = 0;
-
-	KeyFrame[48].movAvion_x = 240.0f;
-	KeyFrame[48].movAvion_y = 0.0f;
-	KeyFrame[48].giroAvion = 0;
-
-	KeyFrame[49].movAvion_x = 245.0f;
-	KeyFrame[49].movAvion_y = 10.0f;
-	KeyFrame[49].giroAvion = 0;
-
-	KeyFrame[50].movAvion_x = 250.0f;
-	KeyFrame[50].movAvion_y = 0.0f;
-	KeyFrame[50].giroAvion = 0;
-
-	KeyFrame[51].movAvion_x = 255.0f;
-	KeyFrame[51].movAvion_y = -10.0f;
-	KeyFrame[51].giroAvion = 0;
-
-	KeyFrame[52].movAvion_x = 260.0f;
-	KeyFrame[52].movAvion_y = 0.0f;
-	KeyFrame[52].giroAvion = 0;
-
-	KeyFrame[53].movAvion_x = 265.0f;
-	KeyFrame[53].movAvion_y = 10.0f;
-	KeyFrame[53].giroAvion = 0;
-
-	KeyFrame[54].movAvion_x = 270.0f;
-	KeyFrame[54].movAvion_y = 0.0f;
-	KeyFrame[54].giroAvion = 0;
-
-	KeyFrame[55].movAvion_x = 275.0f;
-	KeyFrame[55].movAvion_y = -10.0f;
-	KeyFrame[55].giroAvion = 0;
-
-	KeyFrame[56].movAvion_x = 280.0f;
-	KeyFrame[56].movAvion_y = 0.0f;
-	KeyFrame[56].giroAvion = 0;
-
-	KeyFrame[57].movAvion_x = 285.0f;
-	KeyFrame[57].movAvion_y = 10.0f;
-	KeyFrame[57].giroAvion = 0;
-
-	KeyFrame[58].movAvion_x = 290.0f;
-	KeyFrame[58].movAvion_y = 0.0f;
-	KeyFrame[58].giroAvion = 0;
-
-	KeyFrame[59].movAvion_x = 295.0f;
-	KeyFrame[59].movAvion_y = -10.0f;
-	KeyFrame[59].giroAvion = 0;
-
-	KeyFrame[60].movAvion_x = 300.0f;
-	KeyFrame[60].movAvion_y = 0.0f;
-	KeyFrame[60].giroAvion = 0;
-
-	KeyFrame[61].movAvion_x = 300.0f;
-	KeyFrame[61].movAvion_y = 0.0f;
-	KeyFrame[61].giroAvion = 180.0f;
-
-	KeyFrame[62].movAvion_x = 300.0f;
-	KeyFrame[62].movAvion_y = 0.0f;
-	KeyFrame[62].giroAvion = 180;
-
-	KeyFrame[63].movAvion_x = 295.0f;
-	KeyFrame[63].movAvion_y = -10.0f;
-	KeyFrame[63].giroAvion = 180;
-
-	KeyFrame[64].movAvion_x = 290.0f;
-	KeyFrame[64].movAvion_y = 0.0f;
-	KeyFrame[64].giroAvion = 180;
-
-	KeyFrame[65].movAvion_x = 285.0f;
-	KeyFrame[65].movAvion_y = 10.0f;
-	KeyFrame[65].giroAvion = 180;
-
-	KeyFrame[66].movAvion_x = 280.0f;
-	KeyFrame[66].movAvion_y = 0.0f;
-	KeyFrame[66].giroAvion = 180;
-
-	KeyFrame[67].movAvion_x = 275.0f;
-	KeyFrame[67].movAvion_y = -10.0f;
-	KeyFrame[67].giroAvion = 180;
-
-	KeyFrame[68].movAvion_x = 270.0f;
-	KeyFrame[68].movAvion_y = 0.0f;
-	KeyFrame[68].giroAvion = 180;
-
-	KeyFrame[69].movAvion_x = 265.0f;
-	KeyFrame[69].movAvion_y = 10.0f;
-	KeyFrame[69].giroAvion = 180;
-
-	KeyFrame[70].movAvion_x = 260.0f;
-	KeyFrame[70].movAvion_y = 0.0f;
-	KeyFrame[70].giroAvion = 180;
-
-	KeyFrame[71].movAvion_x = 255.0f;
-	KeyFrame[71].movAvion_y = -10.0f;
-	KeyFrame[71].giroAvion = 180;
-
-	KeyFrame[72].movAvion_x = 250.0f;
-	KeyFrame[72].movAvion_y = 0.0f;
-	KeyFrame[72].giroAvion = 180;
-
-	KeyFrame[73].movAvion_x = 245.0f;
-	KeyFrame[73].movAvion_y = 10.0f;
-	KeyFrame[73].giroAvion = 180;
-
-	KeyFrame[74].movAvion_x = 240.0f;
-	KeyFrame[74].movAvion_y = 0.0f;
-	KeyFrame[74].giroAvion = 180;
-
-	KeyFrame[75].movAvion_x = 235.0f;
-	KeyFrame[75].movAvion_y = -10.0f;
-	KeyFrame[75].giroAvion = 180;
-
-	KeyFrame[76].movAvion_x = 230.0f;
-	KeyFrame[76].movAvion_y = 0.0f;
-	KeyFrame[76].giroAvion = 180;
-
-	KeyFrame[77].movAvion_x = 225.0f;
-	KeyFrame[77].movAvion_y = 10.0f;
-	KeyFrame[77].giroAvion = 180;
-
-	KeyFrame[78].movAvion_x = 220.0f;
-	KeyFrame[78].movAvion_y = 0.0f;
-	KeyFrame[78].giroAvion = 180;
-
-	KeyFrame[79].movAvion_x = 215.0f;
-	KeyFrame[79].movAvion_y = -10.0f;
-	KeyFrame[79].giroAvion = 180;
-
-	KeyFrame[80].movAvion_x = 210.0f;
-	KeyFrame[80].movAvion_y = 0.0f;
-	KeyFrame[80].giroAvion = 180;
-
-	KeyFrame[81].movAvion_x = 205.0f;
-	KeyFrame[81].movAvion_y = 10.0f;
-	KeyFrame[81].giroAvion = 180;
-
-	KeyFrame[82].movAvion_x = 200.0f;
-	KeyFrame[82].movAvion_y = 0.0f;
-	KeyFrame[82].giroAvion = 180;
-
-	KeyFrame[83].movAvion_x = 195.0f;
-	KeyFrame[83].movAvion_y = -10.0f;
-	KeyFrame[83].giroAvion = 180;
-
-	KeyFrame[84].movAvion_x = 190.0f;
-	KeyFrame[84].movAvion_y = 0.0f;
-	KeyFrame[84].giroAvion = 180;
-
-	KeyFrame[85].movAvion_x = 185.0f;
-	KeyFrame[85].movAvion_y = 10.0f;
-	KeyFrame[85].giroAvion = 180;
-
-	KeyFrame[86].movAvion_x = 180.0f;
-	KeyFrame[86].movAvion_y = 0.0f;
-	KeyFrame[86].giroAvion = 180;
-
-	KeyFrame[87].movAvion_x = 175.0f;
-	KeyFrame[87].movAvion_y = -10.0f;
-	KeyFrame[87].giroAvion = 180;
-
-	KeyFrame[88].movAvion_x = 170.0f;
-	KeyFrame[88].movAvion_y = 0.0f;
-	KeyFrame[88].giroAvion = 180;
-
-	KeyFrame[89].movAvion_x = 165.0f;
-	KeyFrame[89].movAvion_y = 10.0f;
-	KeyFrame[89].giroAvion = 180;
-
-	KeyFrame[90].movAvion_x = 160.0f;
-	KeyFrame[90].movAvion_y = 0.0f;
-	KeyFrame[90].giroAvion = 180;
-
-	KeyFrame[91].movAvion_x = 155.0f;
-	KeyFrame[91].movAvion_y = -10.0f;
-	KeyFrame[91].giroAvion = 180;
-
-	KeyFrame[92].movAvion_x = 150.0f;
-	KeyFrame[92].movAvion_y = 0.0f;
-	KeyFrame[92].giroAvion = 180;
-
-	KeyFrame[93].movAvion_x = 145.0f;
-	KeyFrame[93].movAvion_y = 10.0f;
-	KeyFrame[93].giroAvion = 180;
-
-	KeyFrame[94].movAvion_x = 140.0f;
-	KeyFrame[94].movAvion_y = 0.0f;
-	KeyFrame[94].giroAvion = 180;
-
-	KeyFrame[95].movAvion_x = 135.0f;
-	KeyFrame[95].movAvion_y = -10.0f;
-	KeyFrame[95].giroAvion = 180;
-
-	KeyFrame[96].movAvion_x = 130.0f;
-	KeyFrame[96].movAvion_y = 0.0f;
-	KeyFrame[96].giroAvion = 180;
-
-	KeyFrame[97].movAvion_x = 125.0f;
-	KeyFrame[97].movAvion_y = 10.0f;
-	KeyFrame[97].giroAvion = 180;
-
-	KeyFrame[98].movAvion_x = 120.0f;
-	KeyFrame[98].movAvion_y = 0.0f;
-	KeyFrame[98].giroAvion = 180;
-
-	KeyFrame[99].movAvion_x = 115.0f;
-	KeyFrame[99].movAvion_y = -10.0f;
-	KeyFrame[99].giroAvion = 180;
-
-	KeyFrame[100].movAvion_x = 110.0f;
-	KeyFrame[100].movAvion_y = 0.0f;
-	KeyFrame[100].giroAvion = 180;
-
-	KeyFrame[101].movAvion_x = 105.0f;
-	KeyFrame[101].movAvion_y = 10.0f;
-	KeyFrame[101].giroAvion = 180;
-
-	KeyFrame[102].movAvion_x = 100.0f;
-	KeyFrame[102].movAvion_y = 0.0f;
-	KeyFrame[102].giroAvion = 180;
-
-	KeyFrame[103].movAvion_x = 95.0f;
-	KeyFrame[103].movAvion_y = -10.0f;
-	KeyFrame[103].giroAvion = 180;
-
-	KeyFrame[104].movAvion_x = 90.0f;
-	KeyFrame[104].movAvion_y = 0.0f;
-	KeyFrame[104].giroAvion = 180;
-
-	KeyFrame[105].movAvion_x = 85.0f;
-	KeyFrame[105].movAvion_y = 10.0f;
-	KeyFrame[105].giroAvion = 180;
-
-	KeyFrame[106].movAvion_x = 80.0f;
-	KeyFrame[106].movAvion_y = 0.0f;
-	KeyFrame[106].giroAvion = 180;
-
-	KeyFrame[107].movAvion_x = 75.0f;
-	KeyFrame[107].movAvion_y = -10.0f;
-	KeyFrame[107].giroAvion = 180;
-
-	KeyFrame[108].movAvion_x = 70.0f;
-	KeyFrame[108].movAvion_y = 0.0f;
-	KeyFrame[108].giroAvion = 180;
-
-	KeyFrame[109].movAvion_x = 65.0f;
-	KeyFrame[109].movAvion_y = 10.0f;
-	KeyFrame[109].giroAvion = 180;
-
-	KeyFrame[110].movAvion_x = 60.0f;
-	KeyFrame[110].movAvion_y = 0.0f;
-	KeyFrame[110].giroAvion = 180;
-
-	KeyFrame[111].movAvion_x = 55.0f;
-	KeyFrame[111].movAvion_y = -10.0f;
-	KeyFrame[111].giroAvion = 180;
-
-	KeyFrame[112].movAvion_x = 50.0f;
-	KeyFrame[112].movAvion_y = 0.0f;
-	KeyFrame[112].giroAvion = 180;
-
-	KeyFrame[113].movAvion_x = 45.0f;
-	KeyFrame[113].movAvion_y = 10.0f;
-	KeyFrame[113].giroAvion = 180;
-
-	KeyFrame[114].movAvion_x = 40.0f;
-	KeyFrame[114].movAvion_y = 0.0f;
-	KeyFrame[114].giroAvion = 180;
-
-	KeyFrame[115].movAvion_x = 35.0f;
-	KeyFrame[115].movAvion_y = -10.0f;
-	KeyFrame[115].giroAvion = 180;
-
-	KeyFrame[116].movAvion_x = 30.0f;
-	KeyFrame[116].movAvion_y = 0.0f;
-	KeyFrame[116].giroAvion = 180;
-
-	KeyFrame[117].movAvion_x = 25.0f;
-	KeyFrame[117].movAvion_y = 10.0f;
-	KeyFrame[117].giroAvion = 180;
-
-	KeyFrame[118].movAvion_x = 20.0f;
-	KeyFrame[118].movAvion_y = 0.0f;
-	KeyFrame[118].giroAvion = 180;
-
-	KeyFrame[119].movAvion_x = 15.0f;
-	KeyFrame[119].movAvion_y = -10.0f;
-	KeyFrame[119].giroAvion = 180;
-
-	KeyFrame[120].movAvion_x = 10.0f;
-	KeyFrame[120].movAvion_y = 0.0f;
-	KeyFrame[120].giroAvion = 180;
-
-	KeyFrame[121].movAvion_x = 5.0f;
-	KeyFrame[121].movAvion_y = 10.0f;
-	KeyFrame[121].giroAvion = 180;
-
-	KeyFrame[122].movAvion_x = 0.0f;
-	KeyFrame[122].movAvion_y = 0.0f;
-	KeyFrame[122].giroAvion = 180;
-
+    KeyFrame[0].movAvion_x = 0.0f;
+    KeyFrame[0].movAvion_y = 0.0f;
+    KeyFrame[0].giroAvion = 0;
+    
+    KeyFrame[1].movAvion_x = -24.0f;
+    KeyFrame[1].movAvion_y = 0.0f;
+    KeyFrame[1].giroAvion = 0;
+    
+    KeyFrame[2].movAvion_x = -28.0f;
+    KeyFrame[2].movAvion_y = 0.2f;
+    KeyFrame[2].giroAvion = 0.2;
+    
+    KeyFrame[3].movAvion_x = -33.0f;
+    KeyFrame[3].movAvion_y = 1.2f;
+    KeyFrame[3].giroAvion = 18.7;
+    
+    KeyFrame[4].movAvion_x = -36.0f;
+    KeyFrame[4].movAvion_y = 2.3f;
+    KeyFrame[4].giroAvion = 28.7;
+    
+    KeyFrame[5].movAvion_x = -39.0f;
+    KeyFrame[5].movAvion_y = 3.4f;
+    KeyFrame[5].giroAvion = 38.7;
+    
+    KeyFrame[6].movAvion_x = -41.0f;
+    KeyFrame[6].movAvion_y = 5.5f;
+    KeyFrame[6].giroAvion = 40.7;
+    
+    KeyFrame[7].movAvion_x = -43.0f;
+    KeyFrame[7].movAvion_y = 7.5f;
+    KeyFrame[7].giroAvion = 40.7;
+    
+    KeyFrame[8].movAvion_x = -45.0f;
+    KeyFrame[8].movAvion_y = 9.5f;
+    KeyFrame[8].giroAvion = 52.7;
+
+    KeyFrame[9].movAvion_x = -46.0f;
+    KeyFrame[9].movAvion_y = 11.5f;
+    KeyFrame[9].giroAvion = 54.7;
+
+    KeyFrame[10].movAvion_x = -47.1f;
+    KeyFrame[10].movAvion_y = 13.5f;
+    KeyFrame[10].giroAvion = 58.7;
+
+    KeyFrame[11].movAvion_x = -48.f;
+    KeyFrame[11].movAvion_y = 15.5f;
+    KeyFrame[11].giroAvion = 62.7;
+
+    KeyFrame[12].movAvion_x = -49.f;
+    KeyFrame[12].movAvion_y = 17.5f;
+    KeyFrame[12].giroAvion = 74.7;
+
+    KeyFrame[13].movAvion_x = -49.f;
+    KeyFrame[13].movAvion_y = 30.5f;
+    KeyFrame[13].giroAvion = 80.7;
+
+    KeyFrame[14].movAvion_x = -51.f;
+    KeyFrame[14].movAvion_y = 31.5f;
+    KeyFrame[14].giroAvion = 48.7;
+
+	KeyFrame[15].movAvion_x = -55.f;
+	KeyFrame[15].movAvion_y = 21.f;
+	KeyFrame[15].giroAvion = 0.0;
+	
 	// Loop mientras no se cierra la ventana
 	while (!mainWindow.getShouldClose())
 	{
@@ -1078,91 +646,24 @@ int main()
 
 		meshList[2]->RenderMesh();
 
+        model = glm::mat4(1.0);
+        posSkate = glm::vec3(posXavion, posYavion + movAvion_y, posZavion + movAvion_x); // Nota, se va a usar el movx en z, para simplificar el codigo y porque los tengo acomodados de esta manera.
+        model = glm::translate(model, posSkate);
+        model = glm::translate(model, glm::vec3(0.f, -1.9f, 0.f));
+        model = glm::scale(model, glm::vec3(6.f, 6.f, 6.f));
+        model = glm::rotate(model, giroAvion * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+        glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+        Skateboard.RenderModel();
+
+        
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(movCoche, 0.5f, -1.5f));
-		modelaux = model;
-		model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Kitt_M.RenderModel();
-		model = modelaux;
-		model = glm::translate(model, glm::vec3(-1.0, -0.1f, 0.2f));
-		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.07f));
-		model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::rotate(model, rotllanta * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
-		// Llanta_M.RenderModel();
-
-		// model = glm::mat4(1.0);
-		// model = glm::translate(model, glm::vec3(0.0f+3*movCoche, 3.0f + 0.33*sin(glm::radians(rotllanta)), -1.0 ));
-		// model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
-		// model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		// model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
-
-		// Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
-		////color = glm::vec3(0.0f, 1.0f, 0.0f);
-		////glUniform3fv(uniformColor, 1, glm::value_ptr(color));
-		// glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		// Blackhawk_M.RenderModel();
-
-		model = glm::mat4(1.0);
-		posblackhawk = glm::vec3(posXavion + movAvion_x, posYavion + movAvion_y, posZavion);
-		model = glm::translate(model, posblackhawk);
-		model = glm::translate(model, glm::vec3(0.f, 10.f, -10.f));
-		model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
-		model = glm::rotate(model, giroAvion * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::rotate(model, -90 * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::translate(model, glm::vec3(0.f, -1.8f, -30.f));
+		model = glm::scale(model, glm::vec3(6.f, 6.f, 6.f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
-		Blackhawk_M.RenderModel();
+		Rampa.RenderModel();
 
-		// color = glm::vec3(1.0f, 1.0f, 1.0f);
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, -1.53f, 0.0f));
-		model = glm::scale(model, glm::vec3(25.0f, 1.0f, 2.0f));
-
-		// glUniform3fv(uniformColor, 1, glm::value_ptr(color));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Camino_M.RenderModel();
-
-		// Agave �qu� sucede si lo renderizan antes del coche y de la pista?
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 0.5f, -2.0f));
-		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		// blending: transparencia o traslucidez
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		AgaveTexture.UseTexture();
-		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
-		meshList[3]->RenderMesh();
-
-		// textura con movimiento
-		// Importantes porque la variable uniform no podemos modificarla directamente
-		toffsetu += 0.001;
-		toffsetv += 0.001;
-		// para que no se desborde la variable
-		if (toffsetu > 1.0)
-			toffsetu = 0.0;
-		// if (toffsetv > 1.0)
-		// toffsetv = 0;
-		// printf("\ntfosset %f \n", toffsetu);
-		// pasar a la variable uniform el valor actualizado
-		toffset = glm::vec2(toffsetu, toffsetv);
-
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 0.2f, -6.0f));
-		model = glm::rotate(model, -90 * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
-		glUniform2fv(uniformTextureOffset, 1, glm::value_ptr(toffset));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-
-		FlechaTexture.UseTexture();
-		// Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
-		meshList[4]->RenderMesh();
-		glDisable(GL_BLEND);
+//		glDisable(GL_BLEND);
 
 		glUseProgram(0);
 

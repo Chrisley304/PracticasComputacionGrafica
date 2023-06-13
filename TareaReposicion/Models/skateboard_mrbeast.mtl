@@ -1,0 +1,61 @@
+# Blender MTL File: 'None'
+# Material Count: 5
+
+newmtl MI_Lettuce_eyes
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd T_M_MED_Lettuce_Head_D.png
+map_d /Users/chrisley/Downloads/mr-beast-fortnite/source/mr-beast/source/MrBeastfbx/T_M_MED_Lettuce_Head_D.png
+
+newmtl M_GB14_Skateboard
+Ns 179.999996
+Ka 1.000000 1.000000 1.000000
+Kd 0.500000 0.500000 0.500000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd /Users/chrisley/Downloads/skateboard/textures/GB14_Skateboard_BaseColor.png
+
+newmtl M_MED_Lettuce_Body
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd /Users/chrisley/Downloads/mr-beast-fortnite/source/mr-beast/source/MrBeastfbx/T_M_MED_Lettuce_Body_D.png
+map_d /Users/chrisley/Downloads/mr-beast-fortnite/source/mr-beast/source/MrBeastfbx/T_M_MED_Lettuce_Body_D.png
+
+newmtl M_MED_Lettuce_FaceAcc
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd /Users/chrisley/Downloads/mr-beast-fortnite/source/mr-beast/source/MrBeastfbx/T_M_MED_Lettuce_Facc_D.png
+map_d /Users/chrisley/Downloads/mr-beast-fortnite/source/mr-beast/source/MrBeastfbx/T_M_MED_Lettuce_Facc_D.png
+
+newmtl M_MED_Lettuce_Head
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd /Users/chrisley/Downloads/mr-beast-fortnite/source/mr-beast/source/MrBeastfbx/T_M_MED_Lettuce_Head_D.png
+map_d /Users/chrisley/Downloads/mr-beast-fortnite/source/mr-beast/source/MrBeastfbx/T_M_MED_Lettuce_Head_D.png

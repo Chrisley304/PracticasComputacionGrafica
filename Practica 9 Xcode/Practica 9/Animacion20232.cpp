@@ -59,7 +59,7 @@ float giroDado;
 float giroDadoOffset;
 
 Window mainWindow;
-std::vector<Mesh *> meshList;
+std::vector<Mesh*> meshList;
 std::vector<Shader> shaderList;
 
 Camera camera;
@@ -109,17 +109,16 @@ SpotLight spotLights[MAX_SPOT_LIGHTS];
 SpotLight spotLights_aux[MAX_SPOT_LIGHTS];
 
 // Vertex Shader
-static const char *vShader = "shaders/shader_light.vert";
+static const char* vShader = "shaders/shader_light.vert";
 
 // Fragment Shader
-static const char *fShader = "shaders/shader_light.frag";
+static const char* fShader = "shaders/shader_light.frag";
 
 // c�lculo del promedio de las normales para sombreado de Phong
-void calcAverageNormals(unsigned int *indices, unsigned int indiceCount, GLfloat *vertices, unsigned int verticeCount,
-                        unsigned int vLength, unsigned int normalOffset)
+void calcAverageNormals(unsigned int* indices, unsigned int indiceCount, GLfloat* vertices, unsigned int verticeCount,
+    unsigned int vLength, unsigned int normalOffset)
 {
-    for (size_t i = 0; i < indiceCount; i += 3)
-    {
+    for (size_t i = 0; i < indiceCount; i += 3) {
         unsigned int in0 = indices[i] * vLength;
         unsigned int in1 = indices[i + 1] * vLength;
         unsigned int in2 = indices[i + 2] * vLength;
@@ -142,8 +141,7 @@ void calcAverageNormals(unsigned int *indices, unsigned int indiceCount, GLfloat
         vertices[in2 + 2] += normal.z;
     }
 
-    for (size_t i = 0; i < verticeCount / vLength; i++)
-    {
+    for (size_t i = 0; i < verticeCount / vLength; i++) {
         unsigned int nOffset = i * vLength + normalOffset;
         glm::vec3 vec(vertices[nOffset], vertices[nOffset + 1], vertices[nOffset + 2]);
         vec = glm::normalize(vec);
@@ -159,29 +157,34 @@ void CreateObjects()
         0, 3, 1,
         1, 3, 2,
         2, 3, 0,
-        0, 1, 2};
+        0, 1, 2
+    };
 
     GLfloat vertices[] = {
         //	x      y      z			u	  v			nx	  ny    nz
         -1.0f, -1.0f, -0.6f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
         0.0f, -1.0f, 1.0f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f,
         1.0f, -1.0f, -0.6f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-        0.0f, 1.0f, 0.0f, 0.5f, 1.0f, 0.0f, 0.0f, 0.0f};
+        0.0f, 1.0f, 0.0f, 0.5f, 1.0f, 0.0f, 0.0f, 0.0f
+    };
 
     unsigned int floorIndices[] = {
         0, 2, 1,
-        1, 2, 3};
+        1, 2, 3
+    };
 
     GLfloat floorVertices[] = {
         -10.0f, 0.0f, -10.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f,
         10.0f, 0.0f, -10.0f, 10.0f, 0.0f, 0.0f, -1.0f, 0.0f,
         -10.0f, 0.0f, 10.0f, 0.0f, 10.0f, 0.0f, -1.0f, 0.0f,
-        10.0f, 0.0f, 10.0f, 10.0f, 10.0f, 0.0f, -1.0f, 0.0f};
+        10.0f, 0.0f, 10.0f, 10.0f, 10.0f, 0.0f, -1.0f, 0.0f
+    };
     unsigned int vegetacionIndices[] = {
         0, 1, 2,
         0, 2, 3,
         4, 5, 6,
-        4, 6, 7};
+        4, 6, 7
+    };
 
     GLfloat vegetacionVertices[] = {
         -0.5f,
@@ -253,7 +256,8 @@ void CreateObjects()
 
     unsigned int flechaIndices[] = {
         0, 1, 2,
-        0, 2, 3};
+        0, 2, 3
+    };
 
     GLfloat flechaVertices[] = {
         -0.5f, 0.0f, 0.5f,
@@ -266,57 +270,122 @@ void CreateObjects()
         0.0f, -1.0f, 0.0f,
         -0.5f, 0.0f, -0.5f,
         0.0f, 1.0f, 0.0f,
-        -1.0f, 0.0f};
-    
-    unsigned int aguaIndices[] = {
-        0, 1, 2,
-        0, 2, 3,
-    };
-    
-    GLfloat aguaVertices[] = {
-        -0.5f, 0.0f, 0.5f,        0.0f, 0.0f,        0.0f, -1.0f, 0.0f,
-        0.5f, 0.0f, 0.5f,        1.0f, 0.0f,        0.0f, -1.0f, 0.0f,
-        0.5f, 0.0f, -0.5f,        1.0f, 1.0f,        0.0f, -1.0f, 0.0f,
-        -0.5f, 0.0f, -0.5f,        0.0f, 1.0f,        0.0f, -1.0f, 0.0f,
-    };
-    
-    unsigned int humoIndices[] = {
-        0, 1, 2,
-        0, 2, 3,
-    };
-    
-    GLfloat humoVertices[] = {
-        -0.5f, 0.0f, 0.5f,        0.0f, 0.0f,        0.0f, -1.0f, 0.0f,
-        0.5f, 0.0f, 0.5f,        1.0f, 0.0f,        0.0f, -1.0f, 0.0f,
-        0.5f, 0.0f, -0.5f,        1.0f, 1.0f,        0.0f, -1.0f, 0.0f,
-        -0.5f, 0.0f, -0.5f,        0.0f, 1.0f,        0.0f, -1.0f, 0.0f,
+        -1.0f, 0.0f
     };
 
-    Mesh *obj1 = new Mesh();
+    unsigned int aguaIndices[] = {
+        0,
+        1,
+        2,
+        0,
+        2,
+        3,
+    };
+
+    GLfloat aguaVertices[] = {
+        -0.5f,
+        0.0f,
+        0.5f,
+        0.0f,
+        0.0f,
+        0.0f,
+        -1.0f,
+        0.0f,
+        0.5f,
+        0.0f,
+        0.5f,
+        1.0f,
+        0.0f,
+        0.0f,
+        -1.0f,
+        0.0f,
+        0.5f,
+        0.0f,
+        -0.5f,
+        1.0f,
+        1.0f,
+        0.0f,
+        -1.0f,
+        0.0f,
+        -0.5f,
+        0.0f,
+        -0.5f,
+        0.0f,
+        1.0f,
+        0.0f,
+        -1.0f,
+        0.0f,
+    };
+
+    unsigned int humoIndices[] = {
+        0,
+        1,
+        2,
+        0,
+        2,
+        3,
+    };
+
+    GLfloat humoVertices[] = {
+        -0.5f,
+        0.0f,
+        0.5f,
+        0.0f,
+        0.0f,
+        0.0f,
+        -1.0f,
+        0.0f,
+        0.5f,
+        0.0f,
+        0.5f,
+        1.0f,
+        0.0f,
+        0.0f,
+        -1.0f,
+        0.0f,
+        0.5f,
+        0.0f,
+        -0.5f,
+        1.0f,
+        1.0f,
+        0.0f,
+        -1.0f,
+        0.0f,
+        -0.5f,
+        0.0f,
+        -0.5f,
+        0.0f,
+        1.0f,
+        0.0f,
+        -1.0f,
+        0.0f,
+    };
+
+    Mesh* obj1 = new Mesh();
 
     obj1->CreateMesh(vertices, indices, 32, 12);
     meshList.push_back(obj1);
 
-    Mesh *obj2 = new Mesh();
+    Mesh* obj2 = new Mesh();
     obj2->CreateMesh(vertices, indices, 32, 12);
     meshList.push_back(obj2);
 
-    Mesh *obj3 = new Mesh();
+    Mesh* obj3 = new Mesh();
     obj3->CreateMesh(floorVertices, floorIndices, 32, 6);
     meshList.push_back(obj3);
 
-    Mesh *obj4 = new Mesh();
+    Mesh* obj4 = new Mesh();
     obj4->CreateMesh(vegetacionVertices, vegetacionIndices, 64, 12);
     meshList.push_back(obj4);
 
-    Mesh *obj5 = new Mesh();
+    Mesh* obj5 = new Mesh();
     obj5->CreateMesh(flechaVertices, flechaIndices, 32, 6);
     meshList.push_back(obj5);
-    
+
     Mesh* obj6 = new Mesh();
     obj6->CreateMesh(aguaVertices, aguaIndices, 32, 6);
     meshList.push_back(obj6);
-    
+
     Mesh* obj7 = new Mesh();
     obj7->CreateMesh(humoVertices, humoIndices, 32, 6);
     meshList.push_back(obj7);
@@ -324,7 +393,7 @@ void CreateObjects()
 
 void CreateShaders()
 {
-    Shader *shader1 = new Shader();
+    Shader* shader1 = new Shader();
 
     shader1->CreateFromFiles(vShader, fShader);
     shaderList.push_back(*shader1);
@@ -362,7 +431,7 @@ int main()
     Camino_M.LoadModel("Models/railroad track.obj");
     Globito = Model();
     Globito.LoadModel("Models/globito.obj");
-    
+
     // Texturas animadas
     aguaTexture = Texture("Textures/aguaMar.png");
     aguaTexture.LoadTextureA();
@@ -399,8 +468,8 @@ int main()
 
     // luz direccional, s�lo 1 y siempre debe de existir
     mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
-                                 0.3f, 0.3f,
-                                 0.0f, 0.0f, -1.0f);
+        0.3f, 0.3f,
+        0.0f, 0.0f, -1.0f);
     // contador de luces puntuales
     unsigned int pointLightCount = 0;
     // Declaraci�n de primer luz puntual
@@ -413,11 +482,11 @@ int main()
     unsigned int spotLightCount = 0;
     // linterna
     spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,
-                              0.0f, 2.0f,
-                              0.0f, 0.0f, 0.0f,
-                              0.0f, -1.0f, 0.0f,
-                              1.0f, 0.0f, 0.0f,
-                              5.0f);
+        0.0f, 2.0f,
+        0.0f, 0.0f, 0.0f,
+        0.0f, -1.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        5.0f);
     spotLightCount++;
 
     // luz fija
@@ -430,45 +499,45 @@ int main()
     //    spotLightCount++;
 
     // luz del coche
-    spotLights[1] = SpotLight(0.5f, 0.f, 0.5f,   // R, G, B
-                              1.0f, 2.0f,        // Light Intensity, Color Intensity
-                              0.f, 1.0f, -1.0f,  // xpos, ypos, zpos
-                              -1.0f, 0.0f, 0.0f, // xdir, ydir, zdir
-                              0.5f, 0.0f, 0.0f,  // con, lin, exp
-                              5.0f);             // edge
+    spotLights[1] = SpotLight(0.5f, 0.f, 0.5f, // R, G, B
+        1.0f, 2.0f, // Light Intensity, Color Intensity
+        0.f, 1.0f, -1.0f, // xpos, ypos, zpos
+        -1.0f, 0.0f, 0.0f, // xdir, ydir, zdir
+        0.5f, 0.0f, 0.0f, // con, lin, exp
+        5.0f); // edge
     spotLightCount++;
 
     // Copia de luz del coche mirando al frente
-    spotLights_aux[0] = SpotLight(0.5f, 0.0f, 0.5f,  // R, G, B
-                                  1.0f, 2.0f,        // Light Intensity, Color Intensity
-                                  0.f, 1.0f, -1.0f,  // xpos, ypos, zpos
-                                  -1.0f, 0.0f, 0.0f, // xdir, ydir, zdir
-                                  0.5f, 0.0f, 0.0f,  // con, lin, exp
-                                  5.0f);
+    spotLights_aux[0] = SpotLight(0.5f, 0.0f, 0.5f, // R, G, B
+        1.0f, 2.0f, // Light Intensity, Color Intensity
+        0.f, 1.0f, -1.0f, // xpos, ypos, zpos
+        -1.0f, 0.0f, 0.0f, // xdir, ydir, zdir
+        0.5f, 0.0f, 0.0f, // con, lin, exp
+        5.0f);
 
     // Luz del coche mirando de reversa
     spotLights_aux[1] = SpotLight(0.5f, 0.0f, 0.5f, // R, G, B
-                                  1.0f, 2.0f,       // Light Intensity, Color Intensity
-                                  0.f, 1.0f, -4.0f, // xpos, ypos, zpos
-                                  1.0f, 0.0f, 0.0f, // xdir, ydir, zdir
-                                  0.5f, 0.0f, 0.0f, // con, lin, exp
-                                  5.0f);            // edge
+        1.0f, 2.0f, // Light Intensity, Color Intensity
+        0.f, 1.0f, -4.0f, // xpos, ypos, zpos
+        1.0f, 0.0f, 0.0f, // xdir, ydir, zdir
+        0.5f, 0.0f, 0.0f, // con, lin, exp
+        5.0f); // edge
 
     // Luz del coche mirando hacia +Z
     spotLights_aux[2] = SpotLight(0.5f, 0.0f, 0.5f, // R, G, B
-                                  1.0f, 2.0f,       // Light Intensity, Color Intensity
-                                  0.f, 1.0f, -4.0f, // xpos, ypos, zpos
-                                  0.0f, 0.0f, 1.0f, // xdir, ydir, zdir
-                                  0.5f, 0.0f, 0.0f, // con, lin, exp
-                                  5.0f);            // edge
+        1.0f, 2.0f, // Light Intensity, Color Intensity
+        0.f, 1.0f, -4.0f, // xpos, ypos, zpos
+        0.0f, 0.0f, 1.0f, // xdir, ydir, zdir
+        0.5f, 0.0f, 0.0f, // con, lin, exp
+        5.0f); // edge
 
     // luz de helic�ptero
     spotLights[2] = SpotLight(1.0f, 0.0f, 0.f,
-                              1.0f, 2.0f,
-                              5.0f, 12.0f, 0.0f,
-                              0.0, -2.5f, 0.0f,
-                              0.2f, 0.0f, 0.0f,
-                              5.0f);
+        1.0f, 2.0f,
+        5.0f, 12.0f, 0.0f,
+        0.0, -2.5f, 0.0f,
+        0.2f, 0.0f, 0.0f,
+        5.0f);
     spotLightCount++;
 
     GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0,
@@ -517,12 +586,13 @@ int main()
     float bGlobito = 0.1f; // Factor de crecimiento
 
     // Loop mientras no se cierra la ventana
-    while (!mainWindow.getShouldClose())
-    {
+    while (!mainWindow.getShouldClose()) {
         GLfloat now = glfwGetTime();
         deltaTime = now - lastTime;
         deltaTime += (now - lastTime) / limitFPS;
         lastTime = now;
+
+        keys = mainWindow.getsKeys();
 
         // Recibir eventos del usuario
         glfwPollEvents();
@@ -576,56 +646,46 @@ int main()
         meshList[2]->RenderMesh();
 
         movYHelicoptero += giroHelicopteroOffset * deltaTime;
-        
-            // Avanza hacia adelante hasta topar con "pared"
-        if (avanzaHelicoptero)
-        {
-            if (direccionHelicoptero == 1 && movZHelicoptero > -500.0f)
-            {
+
+        // Avanza hacia adelante hasta topar con "pared"
+        if (avanzaHelicoptero) {
+            if (direccionHelicoptero == 1 && movZHelicoptero > -500.0f) {
                 movZHelicoptero -= movHelicopteroOffset * deltaTime;
-            }
-            else if (direccionHelicoptero == -1 && movZHelicoptero < 500.0f)
-            {
+            } else if (direccionHelicoptero == -1 && movZHelicoptero < 500.0f) {
                 movZHelicoptero += movHelicopteroOffset * deltaTime;
-            }
-            else
-            {
+            } else {
                 avanzaHelicoptero = false;
             }
         }
-        
-            // Giro del helicoptero al estar parado
-        if (!avanzaHelicoptero)
-        {
-            if ((giroHelicoptero - nVueltasHelicop * 180) < 180.0f)
-            {
+
+        // Giro del helicoptero al estar parado
+        if (!avanzaHelicoptero) {
+            if ((giroHelicoptero - nVueltasHelicop * 180) < 180.0f) {
                 giroHelicoptero += giroHelicopteroOffset * deltaTime;
-            }
-            else
-            {
+            } else {
                 nVueltasHelicop++;
                 avanzaHelicoptero = true;
                 direccionHelicoptero = direccionHelicoptero * -1;
             }
         }
-        
+
         giroHelices += giroHelicesOffset * deltaTime;
-        
-            // Helicoptero
+
+        // Helicoptero
         model = glm::mat4(1.0);
-            // Si se multiplica por una constante afuera del sin se hace mas alta la onda, y si se multiplica dentro de la funcio radians, se hace el movimiento mas rapido
+        // Si se multiplica por una constante afuera del sin se hace mas alta la onda, y si se multiplica dentro de la funcio radians, se hace el movimiento mas rapido
         model = glm::translate(model, glm::vec3(-1.0, 50.0f + (15 * sin(glm::radians(movZHelicoptero * 0.5)) + (15 * sin(glm::radians(movYHelicoptero)))), -1.0 - movZHelicoptero * 0.5));
         modelaux = model;
         model = glm::scale(model, glm::vec3(0.6f, 0.6f, 0.6f));
         model = glm::rotate(model, giroHelicoptero * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
         Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
-            // color = glm::vec3(0.0f, 1.0f, 0.0f);
-            // glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+        // color = glm::vec3(0.0f, 1.0f, 0.0f);
+        // glUniform3fv(uniformColor, 1, glm::value_ptr(color));
         spotLights[2].SetPos(glm::vec3(0.0f, 7.0f + sin(glm::radians(movYHelicoptero)), 0.0f + movZHelicoptero));
         glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
         Blackhawk_M.RenderModel();
-        
-            // Helice helicoptero
+
+        // Helice helicoptero
         model = modelaux;
         model = glm::rotate(model, glm::radians(giroHelices), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::translate(model, glm::vec3(0.0f, 1.2f, 0.0f));
@@ -633,19 +693,15 @@ int main()
         glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
         glUniform3fv(uniformColor, 1, glm::value_ptr(color));
         Helice.RenderModel();
-        
-        
+
         // Botón de reset (F5)
-        if (mainWindow.resetCarro())
-        {
+        if (mainWindow.resetCarro()) {
             curvaPista = 0;
             mainWindow.setResetFlag(false);
         }
 
-        switch (curvaPista)
-        {
-        case 0:
-        {
+        switch (curvaPista) {
+        case 0: {
             movCocheX = 0.0f;
             movCocheY = 0.0f;
             movCocheZ = 0.0f;
@@ -653,21 +709,17 @@ int main()
             giroAutoY = 0.0f;
             giroAutoZ = 0.0f;
             curvaPista = 1;
-        }
-        break;
+        } break;
 
         // Recto en -X
         case 1:
 
-            if (movCocheX > -40.0f)
-            {
+            if (movCocheX > -40.0f) {
                 movCocheX -= movOffset * deltaTime;
                 rotllanta += rotllantaOffset * deltaTime;
                 spotLights[1] = spotLights_aux[0]; // Direccion "de frente" del auto
                 spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0, movCocheZ));
-            }
-            else
-            {
+            } else {
                 curvaPista = 2;
                 giroAutoYAux = giroAutoY;
             }
@@ -677,17 +729,14 @@ int main()
         // Inicio curva
         case 2:
 
-            if (movCocheX > -70.0f && giroAutoY < 90.0f + giroAutoYAux)
-            {
+            if (movCocheX > -70.0f && giroAutoY < 90.0f + giroAutoYAux) {
                 movCocheX -= movOffset * deltaTime * .7;
                 rotllanta += rotllantaOffset * deltaTime;
                 giroAutoY += giroAutoOffset * deltaTime;
                 movCocheZ += movOffset * deltaTime * .5;
                 spotLights[1] = spotLights_aux[0]; // Direccion "de frente" del auto
                 spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0, 0.0f + movCocheZ));
-            }
-            else
-            {
+            } else {
                 curvaPista = 3;
             }
 
@@ -696,16 +745,13 @@ int main()
         // Fin curva
         case 3:
 
-            if (giroAutoY < 90.0f + giroAutoYAux)
-            {
+            if (giroAutoY < 90.0f + giroAutoYAux) {
                 movCocheZ += movOffset * deltaTime * .5;
                 giroAutoY += giroAutoOffset * deltaTime;
                 rotllanta += rotllantaOffset * deltaTime;
                 spotLights[1] = spotLights_aux[2]; // Direccion "de frente" del auto
                 spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0, 0.0f + movCocheZ));
-            }
-            else
-            {
+            } else {
                 curvaPista = 4;
             }
 
@@ -714,14 +760,11 @@ int main()
         // Recto en +Z
         case 4:
 
-            if (movCocheZ < 70.0f)
-            {
+            if (movCocheZ < 70.0f) {
                 movCocheZ += movOffset * deltaTime;
                 rotllanta += rotllantaOffset * deltaTime;
                 spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0, 0.0f + movCocheZ));
-            }
-            else
-            {
+            } else {
                 curvaPista = 5;
                 giroAutoYAux = giroAutoY;
             }
@@ -731,15 +774,12 @@ int main()
         // Inicio curva
         case 5:
 
-            if (movCocheZ < 90.0f && giroAutoY > -90.0f + giroAutoYAux)
-            {
+            if (movCocheZ < 90.0f && giroAutoY > -90.0f + giroAutoYAux) {
                 movCocheZ += movOffset * deltaTime * .7;
                 movCocheX -= movOffset * deltaTime * .5;
                 rotllanta += rotllantaOffset * deltaTime;
                 giroAutoY -= giroAutoOffset * deltaTime;
-            }
-            else
-            {
+            } else {
                 curvaPista = 6;
             }
 
@@ -748,16 +788,13 @@ int main()
         // Fin curva
         case 6:
 
-            if (giroAutoY > -90.0f + giroAutoYAux)
-            {
+            if (giroAutoY > -90.0f + giroAutoYAux) {
                 movCocheX -= movOffset * deltaTime * .5;
                 giroAutoY -= giroAutoOffset * deltaTime;
                 rotllanta += rotllantaOffset * deltaTime;
                 spotLights[1] = spotLights_aux[0]; // Direccion "de frente" del auto
                 spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0, 0.0f + movCocheZ));
-            }
-            else
-            {
+            } else {
                 curvaPista = 7;
             }
 
@@ -766,15 +803,12 @@ int main()
         // Recto en -X
         case 7:
 
-            if (movCocheX > -146.f)
-            {
+            if (movCocheX > -146.f) {
                 movCocheX -= movOffset * deltaTime;
                 rotllanta += rotllantaOffset * deltaTime;
                 spotLights[1] = spotLights_aux[0]; // Direccion "de frente" del auto
                 spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0, 0.0f + movCocheZ));
-            }
-            else
-            {
+            } else {
                 curvaPista = 8;
                 giroAutoYAux = giroAutoY;
             }
@@ -784,17 +818,14 @@ int main()
         // Inicio curva
         case 8:
 
-            if (movCocheX > -165.f && giroAutoY < 90.0f + giroAutoYAux)
-            {
+            if (movCocheX > -165.f && giroAutoY < 90.0f + giroAutoYAux) {
                 movCocheX -= movOffset * deltaTime * .7;
                 rotllanta += rotllantaOffset * deltaTime;
                 giroAutoY += giroAutoOffset * deltaTime;
                 movCocheZ += movOffset * deltaTime * .5;
                 spotLights[1] = spotLights_aux[0]; // Direccion "de frente" del auto
                 spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0, 0.0f + movCocheZ));
-            }
-            else
-            {
+            } else {
                 curvaPista = 9;
             }
 
@@ -803,16 +834,13 @@ int main()
         // Fin curva
         case 9:
 
-            if (giroAutoY < 90.0f + giroAutoYAux)
-            {
+            if (giroAutoY < 90.0f + giroAutoYAux) {
                 movCocheZ += movOffset * deltaTime * .5;
                 giroAutoY += giroAutoOffset * deltaTime;
                 rotllanta += rotllantaOffset * deltaTime;
                 spotLights[1] = spotLights_aux[2]; // Direccion "de frente" del auto
                 spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0, 0.0f + movCocheZ));
-            }
-            else
-            {
+            } else {
                 curvaPista = 10;
             }
 
@@ -821,14 +849,11 @@ int main()
         // Recto en +Z
         case 10:
 
-            if (movCocheZ < 140.0f)
-            {
+            if (movCocheZ < 140.0f) {
                 movCocheZ += movOffset * deltaTime;
                 rotllanta += rotllantaOffset * deltaTime;
                 spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0, 0.0f + movCocheZ));
-            }
-            else
-            {
+            } else {
                 curvaPista = 11;
                 giroAutoYAux = giroAutoY;
             }
@@ -838,15 +863,12 @@ int main()
         // Inicio curva
         case 11:
 
-            if (movCocheZ < 150.0f && giroAutoY < 90.0f + giroAutoYAux)
-            {
+            if (movCocheZ < 150.0f && giroAutoY < 90.0f + giroAutoYAux) {
                 movCocheZ += movOffset * deltaTime * .7;
                 movCocheX += movOffset * deltaTime * .5;
                 rotllanta += rotllantaOffset * deltaTime;
                 giroAutoY += giroAutoOffset * deltaTime;
-            }
-            else
-            {
+            } else {
                 curvaPista = 12;
             }
 
@@ -855,16 +877,13 @@ int main()
         // Fin curva
         case 12:
 
-            if (giroAutoY < 90.0f + giroAutoYAux)
-            {
+            if (giroAutoY < 90.0f + giroAutoYAux) {
                 movCocheX += movOffset * deltaTime * .5;
                 giroAutoY += giroAutoOffset * deltaTime;
                 rotllanta += rotllantaOffset * deltaTime;
                 spotLights[1] = spotLights_aux[1]; // Direccion "de reversa" del auto
                 spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0, 0.0f + movCocheZ));
-            }
-            else
-            {
+            } else {
                 curvaPista = 13;
             }
 
@@ -873,14 +892,11 @@ int main()
         // Recto en X
         case 13:
 
-            if (movCocheX < -32.0f)
-            {
+            if (movCocheX < -32.0f) {
                 movCocheX += movOffset * deltaTime;
                 rotllanta += rotllantaOffset * deltaTime;
                 spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0 + movCocheY, 0.0f + movCocheZ));
-            }
-            else
-            {
+            } else {
                 curvaPista = 14;
                 giroAutoZAux = giroAutoZ;
             }
@@ -890,16 +906,13 @@ int main()
         // Sube rampa
         case 14:
 
-            if (movCocheX < -15.f && giroAutoZ < 45 + giroAutoZAux)
-            {
+            if (movCocheX < -15.f && giroAutoZ < 45 + giroAutoZAux) {
                 movCocheX += movOffset * deltaTime * .7;
                 movCocheY += movOffset * deltaTime * .3;
                 giroAutoZ += giroAutoOffset * deltaTime;
                 rotllanta += rotllantaOffset * deltaTime;
                 spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0 + movCocheY, 0.0f + movCocheZ));
-            }
-            else
-            {
+            } else {
                 curvaPista = 15;
             }
 
@@ -908,15 +921,12 @@ int main()
         // Sube rampa sin girar en Z
         case 15:
 
-            if (movCocheX < -7.f)
-            {
+            if (movCocheX < -7.f) {
                 movCocheX += movOffset * deltaTime * .7;
                 movCocheY += movOffset * deltaTime * .5;
                 rotllanta += rotllantaOffset * deltaTime;
                 spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0 + movCocheY, 0.0f + movCocheZ));
-            }
-            else
-            {
+            } else {
                 curvaPista = 16;
                 giroAutoZAux = giroAutoZ;
             }
@@ -926,16 +936,13 @@ int main()
         // Se endereza
         case 16:
 
-            if (giroAutoZ > -30 + giroAutoZAux)
-            {
+            if (giroAutoZ > -30 + giroAutoZAux) {
                 giroAutoZ -= giroAutoOffset * deltaTime;
                 movCocheX += movOffset * deltaTime * .7;
                 movCocheY += movOffset * deltaTime * .2;
                 rotllanta += rotllantaOffset * deltaTime;
                 spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0 + movCocheY, 0.0f + movCocheZ));
-            }
-            else
-            {
+            } else {
                 curvaPista = 17;
             }
 
@@ -944,73 +951,61 @@ int main()
         // Recto en +X
         case 17:
 
-            if (movCocheX < 120.0f)
-            {
+            if (movCocheX < 120.0f) {
                 movCocheX += movOffset * deltaTime;
                 rotllanta += rotllantaOffset * deltaTime;
                 spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0 + movCocheY, 0.0f + movCocheZ));
-            }
-            else
-            {
+            } else {
                 curvaPista = 18;
                 giroAutoZAux = giroAutoZ;
             }
 
             break;
-                    
-        // Baja rampa
-            case 18:
-                
-                if (giroAutoZ > -45 + giroAutoZAux)
-                {
-                    movCocheX += movOffset * deltaTime * .7;
-                    movCocheY -= movOffset * deltaTime * .3;
-                    giroAutoZ -= giroAutoOffset * deltaTime;
-                    rotllanta += rotllantaOffset * deltaTime;
-                    spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0 + movCocheY, 0.0f + movCocheZ));
-                }
-                else
-                {
-                    curvaPista = 19;
-                }
-                
-                break;
-                
-            // Baja rampa sin girar en Z
-            case 19:
-                
-                if (movCocheX < 130.f)
-                {
-                    movCocheX += movOffset * deltaTime * .7;
-                    movCocheY -= movOffset * deltaTime * .5;
-                    rotllanta += rotllantaOffset * deltaTime;
-                    spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0 + movCocheY, 0.0f + movCocheZ));
-                }
-                else
-                {
-                    curvaPista = 20;
-                    giroAutoZAux = giroAutoZ;
-                }
-                
-                break;
-                
-            // Se endereza
-            case 20:
-                
-                if (giroAutoZ < +40 + giroAutoZAux)
-                {
-                    giroAutoZ += giroAutoOffset * deltaTime;
-                    movCocheX += movOffset * deltaTime * .7;
-                    movCocheY -= movOffset * deltaTime * .2;
-                    rotllanta += rotllantaOffset * deltaTime;
-                    spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0 + movCocheY, 0.0f + movCocheZ));
-                }
-                else
-                {
-                    curvaPista = 21;
-                }
-                
-                break;
+
+            // Baja rampa
+        case 18:
+
+            if (giroAutoZ > -45 + giroAutoZAux) {
+                movCocheX += movOffset * deltaTime * .7;
+                movCocheY -= movOffset * deltaTime * .3;
+                giroAutoZ -= giroAutoOffset * deltaTime;
+                rotllanta += rotllantaOffset * deltaTime;
+                spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0 + movCocheY, 0.0f + movCocheZ));
+            } else {
+                curvaPista = 19;
+            }
+
+            break;
+
+        // Baja rampa sin girar en Z
+        case 19:
+
+            if (movCocheX < 130.f) {
+                movCocheX += movOffset * deltaTime * .7;
+                movCocheY -= movOffset * deltaTime * .5;
+                rotllanta += rotllantaOffset * deltaTime;
+                spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0 + movCocheY, 0.0f + movCocheZ));
+            } else {
+                curvaPista = 20;
+                giroAutoZAux = giroAutoZ;
+            }
+
+            break;
+
+        // Se endereza
+        case 20:
+
+            if (giroAutoZ < +40 + giroAutoZAux) {
+                giroAutoZ += giroAutoOffset * deltaTime;
+                movCocheX += movOffset * deltaTime * .7;
+                movCocheY -= movOffset * deltaTime * .2;
+                rotllanta += rotllantaOffset * deltaTime;
+                spotLights[1].SetPos(glm::vec3(0.0f + movCocheX, 0.0 + movCocheY, 0.0f + movCocheZ));
+            } else {
+                curvaPista = 21;
+            }
+
+            break;
 
         default:
             break;
@@ -1019,13 +1014,10 @@ int main()
         // Carroceria Vocho
         model = glm::mat4(1.0);
 
-        if (mainWindow.isAutoManual())
-        {
+        if (mainWindow.isAutoManual()) {
             model = glm::translate(model, glm::vec3(mainWindow.getMovimientoXAuto(), 0.f, mainWindow.getMovimientoZAuto())); //         Movimiento manual del auto
             spotLights[1].SetPos(glm::vec3(0.0f + mainWindow.getMovimientoXAuto(), 0.0, mainWindow.getMovimientoZAuto()));
-        }
-        else
-        {
+        } else {
             model = glm::translate(model, glm::vec3(movCocheX, movCocheY, movCocheZ)); //         Movimiento manual del auto
         }
 
@@ -1068,38 +1060,35 @@ int main()
 
         // Movimiento del helicoptero:
 
-//        // Luz del helicoptero
-//        if (cuentaLuzHelicoptero >= 60)
-//        {
-//            cuentaLuzHelicoptero = 0;
-//            mainWindow.alternHelicopteroEncendido();
-//        }
-//
-//        if (mainWindow.isHelicopteroEncendido())
-//        {
-//            shaderList[0].SetSpotLights(spotLights, spotLightCount);
-//        }
-//        else
-//        {
-//            shaderList[0].SetSpotLights(spotLights, spotLightCount - 1); // Se resta -1 para no renderizar la luz del helicoptero
-//        }
-//
-//        cuentaLuzHelicoptero++;
+        //        // Luz del helicoptero
+        //        if (cuentaLuzHelicoptero >= 60)
+        //        {
+        //            cuentaLuzHelicoptero = 0;
+        //            mainWindow.alternHelicopteroEncendido();
+        //        }
+        //
+        //        if (mainWindow.isHelicopteroEncendido())
+        //        {
+        //            shaderList[0].SetSpotLights(spotLights, spotLightCount);
+        //        }
+        //        else
+        //        {
+        //            shaderList[0].SetSpotLights(spotLights, spotLightCount - 1); // Se resta -1 para no renderizar la luz del helicoptero
+        //        }
+        //
+        //        cuentaLuzHelicoptero++;
 
         // movimiento vertical:
 
         // Globito
         // recorrido de un tornado con ecuación del espiral de Arquimedes
         // Se topa la altura para que sea facilmente visible
-        if (movGlobitoY < 50.0f)
-        {
+        if (movGlobitoY < 50.0f) {
             movGlobitoX = (aGlobito + bGlobito * anguloGlobito) * cos(anguloGlobito);
             movGlobitoZ = (aGlobito + bGlobito * anguloGlobito) * sin(anguloGlobito);
             movGlobitoY = anguloGlobito * 0.5f;
             anguloGlobito += anguloGlobitoOffset * deltaTime;
-        }
-        else
-        {
+        } else {
             movGlobitoX = 0.0f;
             movGlobitoY = 0.0f;
             movGlobitoZ = 0.0f;
@@ -1139,8 +1128,7 @@ int main()
         toffsetv += 0.0 * deltaTime;
 
         // para que no se desborde la variable
-        if (toffsetu > 1.0)
-        {
+        if (toffsetu > 1.0) {
             toffsetu = 0.0;
         }
 
@@ -1160,7 +1148,7 @@ int main()
         FlechaTexture.UseTexture();
         // Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
         meshList[4]->RenderMesh();
-        
+
         // Agua
         model = glm::mat4(1.0);
         model = glm::translate(model, glm::vec3(100.f, 1.9f, 306.0f));
@@ -1169,7 +1157,7 @@ int main()
         glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
         aguaTexture.UseTexture();
         meshList[5]->RenderMesh();
-        
+
         // Humo auto
         model = modelaux;
         model = glm::rotate(model, glm::radians(giroAutoZ), glm::vec3(0.0f, 0.0f, 1.0f));
@@ -1182,7 +1170,7 @@ int main()
         glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
         humoAutoTexture.UseTexture();
         meshList[6]->RenderMesh();
-        
+
         glDisable(GL_BLEND);
 
         glUseProgram(0);
